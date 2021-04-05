@@ -11,6 +11,15 @@ class ProfoundGodLibrary extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'PG Library',
+      theme: ThemeData(
+        fontFamily: 'Fira Sans',
+        textTheme: TextTheme(
+          overline: TextStyle(
+            fontFamily: 'Fira Sans',
+            color: Color(0xFF151311),
+          )
+        )
+      ),
       home: Dashboard(),
     );
   }
