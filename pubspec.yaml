@@ -20,9 +20,8 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/
   fonts:
     - family: Fira Sans
       fonts:
