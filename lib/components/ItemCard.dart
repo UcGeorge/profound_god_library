@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:profoundgodlibrary/components/DashboardContinueReadingButton.dart';
 
 class NovelCardDiscover extends StatelessWidget {
@@ -154,6 +155,28 @@ class NovelCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class DiscoverCard extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 274,
+      height: 363,
+      decoration: BoxDecoration(
+        color: Color(0xFFEAEAEA),
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+      ),
+      child: Center(
+        child: FaIcon(
+          FontAwesomeIcons.plus,
+          color: Color(0xFF979797).withOpacity(0.7),
+          size: 92,
         ),
       ),
     );
