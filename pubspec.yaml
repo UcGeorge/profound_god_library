@@ -26,6 +26,8 @@ flutter:
     - family: Fira Sans
       fonts:
         - asset: assets/fonts/Fira_Sans/FiraSans-Regular.ttf
+        - asset: assets/fonts/Fira_Sans/FiraSans-Light.ttf
+          weight: 100
         - asset: assets/fonts/Fira_Sans/FiraSans-SemiBold.ttf
           weight: 500
 
