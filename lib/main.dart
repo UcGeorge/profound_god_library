@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:profoundgodlibrary/dashboard.dart';
+import 'package:profoundgodlibrary/views/Novel.dart';
+import 'package:profoundgodlibrary/views/dashboard.dart';
+
+import 'constants/constants.dart';
 
 void main(){
   runApp(ProfoundGodLibrary());
@@ -21,7 +24,11 @@ class ProfoundGodLibrary extends StatelessWidget {
           )
         )
       ),
-      home: Dashboard(),
+      home: NovelView(),
+      routes: <String, WidgetBuilder>{
+        HOME_SCREEN: (BuildContext context) => NovelView(),
+        //NOVEL: (BuildContext context) => Dashboard(),
+      },
     );
   }
 }
