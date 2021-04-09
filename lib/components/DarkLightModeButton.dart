@@ -17,7 +17,8 @@ Widget dlmButton(){
         ),
         child: Center(
           child: FaIcon(
-            FontAwesomeIcons.solidMoon,
+            FontAwesomeIcons.solidLightbulb,
+            //FontAwesomeIcons.lightbulb, - Dark mode
             color: Color(0xFFEAEAEA),
             size: 20,
           ),

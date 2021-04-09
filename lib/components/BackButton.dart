@@ -11,7 +11,9 @@ class CustomBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.all(Radius.circular(15)),
-      onTap: (){},
+      onTap: (){
+        Navigator.pop(context);
+      },
       child: Container(
         height: 30,
         width: 30,

@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:profoundgodlibrary/constants/constants.dart';
 
 class CRB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.all(Radius.circular(15)),
-      onTap: (){},
+      onTap: (){
+        Navigator.pushNamed(context, CHAPTER);
+      },
       child: Container(
         width: 111,
         height: 25,
