@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:profoundgodlibrary/bloc/theme_bloc.dart';
 import 'package:profoundgodlibrary/constants/constants.dart';
+import 'package:profoundgodlibrary/models/theme.dart';
 import 'ContinueReadingButton.dart';
 
 class NovelCardDiscover extends StatelessWidget {
@@ -21,7 +24,7 @@ class NovelCardDiscover extends StatelessWidget {
       width: 274,
       height: 363,
       decoration: BoxDecoration(
-        color: Color(0xFFEAEAEA),
+        color: Colors.transparent,
         image: DecorationImage(
           image: coverImage,
           fit: BoxFit.cover,
@@ -103,7 +106,7 @@ class NovelCard extends StatelessWidget {
             width: 274,
             height: 363,
             decoration: BoxDecoration(
-              color: Color(0xFFEAEAEA),
+              color: Colors.transparent,
               image: DecorationImage(
                 image: coverImage,
                 fit: BoxFit.cover,
@@ -172,20 +175,24 @@ class DiscoverCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 274,
-      height: 363,
-      decoration: BoxDecoration(
-        color: Color(0xFFEAEAEA),
-        borderRadius: BorderRadius.all(Radius.circular(30)),
-      ),
-      child: Center(
-        child: FaIcon(
-          FontAwesomeIcons.plus,
-          color: Color(0xFF979797).withOpacity(0.7),
-          size: 92,
-        ),
-      ),
+    return BlocBuilder<ThemeBloc, Map<ThemedComponent, dynamic>>(
+        builder: (_, theme) {
+          return Container(
+            width: 274,
+            height: 363,
+            decoration: BoxDecoration(
+              color: theme[ThemedComponent.discover_card_bg],
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+            ),
+            child: Center(
+              child: FaIcon(
+                FontAwesomeIcons.plus,
+                color: theme[ThemedComponent.discover_card_icon],
+                size: 92,
+              ),
+            ),
+          );
+        }
     );
   }
 }
