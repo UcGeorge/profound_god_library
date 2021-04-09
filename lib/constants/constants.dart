@@ -1,2 +1,3 @@
 const String HOME_SCREEN = '/Dashboard',
-    NOVEL = '/Novel';
+    NOVEL = '/Novel',
+    CHAPTER = '/Chapter';
