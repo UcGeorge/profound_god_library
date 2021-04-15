@@ -7,6 +7,7 @@ import 'package:profoundgodlibrary/components/ChapterImage.dart';
 import 'package:profoundgodlibrary/components/ChapterListItem.dart';
 import 'package:profoundgodlibrary/components/DarkLightModeButton.dart';
 import 'package:profoundgodlibrary/constants/ChapterAttributes.dart';
+import 'package:profoundgodlibrary/constants/constants.dart';
 import 'package:profoundgodlibrary/models/theme.dart';
 
 class NovelView extends StatefulWidget {
@@ -149,7 +150,9 @@ class _NovelViewState extends State<NovelView> {
 
   InkWell buildContinueReadingButton() {
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        Navigator.pushNamed(context, CHAPTER);
+      },
       splashColor: Color(0xFFEAEAEA),
       borderRadius: BorderRadius.all(Radius.circular(20)),
       child: BlocBuilder<ThemeBloc, Map<ThemedComponent, dynamic>>(
