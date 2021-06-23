@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 
+import 'Readable.dart';
+
 class LocalStorage extends ChangeNotifier {
   Directory? root;
   bool isBusy = true;
@@ -25,7 +27,15 @@ class LocalStorage extends ChangeNotifier {
       if (!await dataFile!.exists()) {
         print("Creating data file");
         await dataFile!.create(recursive: true);
-        await dataFile!.writeAsString('{}');
+        await dataFile!.writeAsString(r'''
+          {
+            "Recent searches": [],
+            "Recents": [],
+            "Library": {
+                "Novel": {},
+                "Manga": {}
+            }
+          }''');
       }
 
       String contents = await dataFile!.readAsString();
@@ -42,5 +52,61 @@ class LocalStorage extends ChangeNotifier {
       notifyListeners();
       print(ex);
     }
+  }
+
+  List<Readable> getRecentSearches() {
+    List<Readable> rS = [];
+    List<dynamic> recentSearches = stateData!["Recent searches"];
+
+    for (Map<String, dynamic> a in recentSearches) {
+      String name = a["name"];
+      String coverImage = a["coverImage"];
+      ReadableType readableType =
+          a["type"] == "Novel" ? ReadableType.Novel : ReadableType.Manga;
+      rS.add(Readable(name, coverImage, readableType));
+    }
+    print("Returning $rS");
+    return rS;
+  }
+
+  List<Readable> getRecents() {
+    List<Readable> rS = [];
+    List<dynamic> recents = stateData!["Recents"];
+
+    for (Map<String, dynamic> a in recents) {
+      String name = a["name"];
+      String coverImage = a["coverImage"];
+      ReadableType readableType =
+          a["type"] == "Novel" ? ReadableType.Novel : ReadableType.Manga;
+      rS.add(Readable(name, coverImage, readableType));
+    }
+    print("Returning $rS");
+    return rS;
+  }
+
+  List<Readable> getShortcuts() {
+    List<Readable> rS = [];
+    Map<String, dynamic> mangaLibrary = stateData!["Library"]["Manga"];
+    Map<String, dynamic> novelLibrary = stateData!["Library"]["Novel"];
+
+    mangaLibrary.forEach((k, v) {
+      String name = k;
+      String coverImage = v["coverImage"];
+      ReadableType readableType =
+          v["type"] == "Novel" ? ReadableType.Novel : ReadableType.Manga;
+      rS.add(Readable(name, coverImage, readableType));
+    });
+
+    novelLibrary.forEach((k, v) {
+      String name = k;
+      String coverImage = v["coverImage"];
+      ReadableType readableType =
+          v["type"] == "Novel" ? ReadableType.Novel : ReadableType.Manga;
+      rS.add(Readable(name, coverImage, readableType));
+    });
+
+    rS.shuffle();
+    print("Returning $rS");
+    return rS;
   }
 }

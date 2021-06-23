@@ -7,6 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:window_utils/window_utils.dart';
 
 import 'Constants/Routes.dart';
+import 'Models/Manganelo.dart';
+import 'Models/Network.dart';
+import 'Models/WuxiaWorld.dart';
 
 void resetPrefs() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -17,7 +20,16 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (context) => LocalStorage(),
-      child: ProfoundGodLibrary(),
+      child: ChangeNotifierProvider(
+        create: (context) => WuxiaWorld(),
+        child: ChangeNotifierProvider(
+          create: (context) => Manganelo(),
+          child: ChangeNotifierProvider(
+            create: (context) => Network(),
+            child: ProfoundGodLibrary(),
+          ),
+        ),
+      ),
     ),
   );
   doWhenWindowReady(() {
@@ -82,13 +94,7 @@ class ProfoundGodLibrary extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: SPLASH,
-      routes: <String, WidgetBuilder>{
-        SPLASH: (BuildContext context) => SplashView(),
-        // HOME_SCREEN: (BuildContext context) => Dashboard(),
-        // NOVEL: (BuildContext context) => NovelView(),
-        // CHAPTER: (BuildContext context) => ChapterView(),
-      },
+      home: SplashView(),
     );
   }
 }

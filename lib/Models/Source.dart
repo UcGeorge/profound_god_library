@@ -1,0 +1,1 @@
+enum Source { online, offline }
