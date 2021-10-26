@@ -1,15 +1,13 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:profoundgodlibrary/Models/LocalStorage.dart';
+import 'package:profoundgodlibrary/constants/constants.dart';
+import 'package:profoundgodlibrary/src/LocalStorage.dart';
 import 'package:profoundgodlibrary/Views/splash_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:window_utils/window_utils.dart';
-
-import 'Constants/Routes.dart';
-import 'Models/Manganelo.dart';
-import 'Models/Network.dart';
-import 'Models/WuxiaWorld.dart';
+import 'package:profoundgodlibrary/src/Manganelo.dart';
+import 'package:profoundgodlibrary/src/Network.dart';
+import 'package:profoundgodlibrary/src/WuxiaWorld.dart';
 
 void resetPrefs() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -18,18 +16,14 @@ void resetPrefs() async {
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => LocalStorage(),
-      child: ChangeNotifierProvider(
-        create: (context) => WuxiaWorld(),
-        child: ChangeNotifierProvider(
-          create: (context) => Manganelo(),
-          child: ChangeNotifierProvider(
-            create: (context) => Network(),
-            child: ProfoundGodLibrary(),
-          ),
-        ),
-      ),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => LocalStorage()),
+        ChangeNotifierProvider(create: (context) => WuxiaWorld()),
+        ChangeNotifierProvider(create: (context) => Manganelo()),
+        ChangeNotifierProvider(create: (context) => Network()),
+      ],
+      child: ProfoundGodLibrary(),
     ),
   );
   doWhenWindowReady(() {
@@ -46,54 +40,7 @@ class ProfoundGodLibrary extends StatelessWidget {
       title: 'PGL',
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
-        scaffoldBackgroundColor: const Color(0xFF121212),
-        backgroundColor: const Color(0xFF121212),
-        primaryColor: Color(0xFF121212),
-        // ignore: deprecated_member_use
-        accentColor: const Color(0xFFF6A00C),
-        iconTheme: const IconThemeData().copyWith(color: Colors.white),
-        fontFamily: 'Montserrat',
-        inputDecorationTheme: InputDecorationTheme(
-            focusColor: const Color(0xFFF6A00C),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                // ignore: deprecated_member_use
-                color: const Color(0xFFF6A00C),
-              ),
-            ),
-            hintStyle: TextStyle(
-              color: Color(0xFF818991),
-              fontSize: 14.0,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.0,
-            )),
-        textTheme: TextTheme(
-          headline2: const TextStyle(
-            color: Colors.white,
-            fontSize: 32.0,
-            fontWeight: FontWeight.bold,
-          ),
-          headline4: TextStyle(
-            fontSize: 12.0,
-            color: Colors.grey[300],
-            fontWeight: FontWeight.w500,
-            letterSpacing: 2.0,
-          ),
-          bodyText1: TextStyle(
-            color: Colors.grey[300],
-            fontSize: 14.0,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 1.0,
-          ),
-          bodyText2: TextStyle(
-            color: Colors.grey[300],
-            letterSpacing: 1.0,
-          ),
-        ),
-      ),
+      darkTheme: kDarkThemeData,
       home: SplashView(),
     );
   }

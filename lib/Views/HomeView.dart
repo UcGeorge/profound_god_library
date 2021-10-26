@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:profoundgodlibrary/Models/LocalStorage.dart';
-import 'package:profoundgodlibrary/Models/Readable.dart';
-import 'package:profoundgodlibrary/Widgets/AppBar.dart';
+import 'package:profoundgodlibrary/components/components.dart';
+import 'package:profoundgodlibrary/src/LocalStorage.dart';
+import 'package:profoundgodlibrary/src/Readable.dart';
+import 'package:profoundgodlibrary/components/AppBar.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -12,9 +13,9 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  List<Readable>? recents;
-  List<Readable>? recentSearches;
-  List<Readable>? shortcuts;
+  late List<Readable> recents;
+  late List<Readable> recentSearches;
+  late List<Readable> shortcuts;
 
   @override
   void initState() {
@@ -27,25 +28,30 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         PGLAppBar(),
-        recents!.isEmpty && recentSearches!.isEmpty && shortcuts!.isEmpty
-            ? Container(
-                child: Center(
-                  child: Text(
-                    "It's lonely here...",
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                ),
-              )
-            : Container(
-                child: Center(
-                  child: Text(
-                    "There's some stuff here... apparently.\nRecents $recents\nRecent Searches $recentSearches\nShortcuts $shortcuts",
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                ),
-              ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            children: [
+              recents.isEmpty && recentSearches.isEmpty && shortcuts.isEmpty
+                  ? Container(
+                      child: Center(
+                        child: Text(
+                          "It's lonely here...",
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink(),
+              recentSearches.isEmpty
+                  ? SizedBox.shrink()
+                  : RecentsView(readables: recents),
+            ],
+          ),
+        )
       ],
     );
   }

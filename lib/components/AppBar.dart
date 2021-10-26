@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:profoundgodlibrary/Models/Network.dart';
-import 'package:profoundgodlibrary/Models/SelectedMenu.dart';
+import 'package:profoundgodlibrary/src/Network.dart';
+import 'package:profoundgodlibrary/src/SelectedMenu.dart';
 import 'package:provider/src/provider.dart';
 
 class PGLAppBar extends StatelessWidget {

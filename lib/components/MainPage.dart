@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:profoundgodlibrary/Models/SelectedMenu.dart';
+import 'package:profoundgodlibrary/src/SelectedMenu.dart';
 import 'package:profoundgodlibrary/Views/HomeView.dart';
 import 'package:profoundgodlibrary/Views/LibraryView.dart';
 import 'package:profoundgodlibrary/Views/SearchView.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:profoundgodlibrary/Models/LocalStorage.dart';
-import 'package:profoundgodlibrary/Models/Network.dart';
-import 'package:profoundgodlibrary/Models/SelectedMenu.dart';
+import 'package:profoundgodlibrary/src/LocalStorage.dart';
+import 'package:profoundgodlibrary/src/Network.dart';
+import 'package:profoundgodlibrary/src/SelectedMenu.dart';
 import 'package:provider/provider.dart';
 import 'Shell.dart';
-// import 'package:profoundgodlibrary/Widgets/Widgets.dart';
+// import 'package:profoundgodlibrary/components/Widgets.dart';
 
 class SplashView extends StatefulWidget {
   @override
