@@ -48,7 +48,7 @@ final TextTheme kTextTheme = TextTheme(
   headline2: GoogleFonts.inter(
     color: Colors.white,
     fontSize: 24.0,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w500,
   ),
   headline4: TextStyle(
     fontSize: 12.0,

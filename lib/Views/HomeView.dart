@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profoundgodlibrary/components/components.dart';
-import 'package:profoundgodlibrary/src/LocalStorage.dart';
-import 'package:profoundgodlibrary/src/Readable.dart';
 import 'package:profoundgodlibrary/components/AppBar.dart';
-import 'package:provider/provider.dart';
+import 'package:profoundgodlibrary/src/database/database.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -13,20 +11,19 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late List<Readable> recents;
-  late List<Readable> recentSearches;
-  late List<Readable> shortcuts;
+  late Database database;
 
   @override
   void initState() {
     super.initState();
-    recentSearches = context.read<LocalStorage>().getRecentSearches();
-    recents = context.read<LocalStorage>().getRecents();
-    shortcuts = context.read<LocalStorage>().getShortcuts();
+    database = Database(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    var recents = database.library.data;
+    var recentSearches = database.library.data;
+    var shortcuts = database.library.data;
     return Column(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
                   : SizedBox.shrink(),
               recentSearches.isEmpty
                   ? SizedBox.shrink()
-                  : RecentsView(readables: recents),
+                  : RecentsView(readables: recents.values.toList()),
             ],
           ),
         )

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:profoundgodlibrary/constants/constants.dart';
-import 'package:profoundgodlibrary/src/Readable.dart';
+import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 
 class ReadableView extends StatefulWidget {
   const ReadableView({
@@ -99,7 +99,7 @@ class _ReadableViewState extends State<ReadableView> {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: GoogleFonts.inter(
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
                   SizedBox(height: 4),
@@ -132,9 +132,7 @@ class _ReadableViewState extends State<ReadableView> {
                             : EdgeInsets.only(),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          color: extendedHover
-                              ? Colors.white.withOpacity(0.7)
-                              : Colors.white,
+                          color: Colors.white.withOpacity(0.7),
                         ),
                         child: extendedHover
                             ? Center(

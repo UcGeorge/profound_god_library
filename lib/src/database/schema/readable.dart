@@ -1,12 +1,11 @@
-import 'package:profoundgodlibrary/src/Manga.dart';
-import 'package:profoundgodlibrary/src/Novel.dart';
 import 'package:profoundgodlibrary/src/helpers.dart';
+import 'package:profoundgodlibrary/src/interfaces/jsonifiable.dart';
 
-class Readable {
+class Readable extends Jsonifiable {
   final String id;
   final String name;
-  CoverPicture coverPicture;
-  ReadableType readableType;
+  final CoverPicture coverPicture;
+  final ReadableType readableType;
 
   Readable(
     this.name,
@@ -24,32 +23,19 @@ class Readable {
             : CoverPicture(true, json['coverPicture']);
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'type': readableType == ReadableType.Novel ? 'novel' : 'manga',
-        'imageType': coverPicture.isOnline ? 'online' : 'local',
-        'coverPicture': coverPicture.link,
+        id: {
+          'name': name,
+          'type': readableType == ReadableType.Novel ? 'novel' : 'manga',
+          'imageType': coverPicture.isOnline ? 'online' : 'local',
+          'coverPicture': coverPicture.link,
+        }
       };
-
-  Manga? toManga() {
-    return readableType == ReadableType.Manga
-        ? Manga(id, name, coverPicture)
-        : null;
-  }
-
-  Novel? toNovel() {
-    return readableType == ReadableType.Novel
-        ? Novel(id, name, coverPicture)
-        : null;
-  }
 
   @override
   String toString() {
     return toJson().toString();
   }
 }
-
-class Chapter {}
 
 enum ReadableType { Manga, Novel }
 

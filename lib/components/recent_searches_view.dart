@@ -3,8 +3,8 @@ import 'package:profoundgodlibrary/components/components.dart';
 import 'package:profoundgodlibrary/constants/constants.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 
-class RecentsView extends StatelessWidget {
-  const RecentsView({
+class RecentSearches extends StatelessWidget {
+  const RecentSearches({
     Key? key,
     required this.readables,
   }) : super(key: key);
@@ -17,7 +17,7 @@ class RecentsView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Continue Reading',
+          'Recent Searches',
           style: Theme.of(context).textTheme.headline2,
         ),
         SizedBox(height: 15),

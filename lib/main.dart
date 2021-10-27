@@ -5,9 +5,7 @@ import 'package:profoundgodlibrary/src/LocalStorage.dart';
 import 'package:profoundgodlibrary/Views/splash_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:profoundgodlibrary/src/Manganelo.dart';
 import 'package:profoundgodlibrary/src/Network.dart';
-import 'package:profoundgodlibrary/src/WuxiaWorld.dart';
 
 void resetPrefs() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -19,8 +17,6 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => LocalStorage()),
-        ChangeNotifierProvider(create: (context) => WuxiaWorld()),
-        ChangeNotifierProvider(create: (context) => Manganelo()),
         ChangeNotifierProvider(create: (context) => Network()),
       ],
       child: ProfoundGodLibrary(),
