@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:profoundgodlibrary/src/helpers.dart';
 import 'package:profoundgodlibrary/src/interfaces/jsonifiable.dart';
 
@@ -33,7 +35,7 @@ class Readable extends Jsonifiable {
 
   @override
   String toString() {
-    return toJson().toString();
+    return jsonEncode(toJson());
   }
 }
 

@@ -20,6 +20,7 @@ class PGLAppBar extends StatelessWidget {
             Row(
               children: [
                 IconButton(
+                  splashRadius: 15,
                   color: Color(0xFF000000),
                   onPressed: context.read<SelectedMenu>().popStack.isEmpty
                       ? () {}
@@ -28,7 +29,7 @@ class PGLAppBar extends StatelessWidget {
                         },
                   icon: Icon(
                     Icons.chevron_left_rounded,
-                    size: 30,
+                    size: 25,
                     color: context.read<SelectedMenu>().popStack.isEmpty
                         ? Theme.of(context).iconTheme.color!.withOpacity(0.3)
                         : Theme.of(context).iconTheme.color,
@@ -36,6 +37,7 @@ class PGLAppBar extends StatelessWidget {
                 ),
                 SizedBox(width: 20),
                 IconButton(
+                  splashRadius: 15,
                   color: Color(0xFF000000),
                   onPressed: context.read<SelectedMenu>().pushStack.isEmpty
                       ? () {}
@@ -44,7 +46,7 @@ class PGLAppBar extends StatelessWidget {
                         },
                   icon: Icon(
                     Icons.chevron_right_rounded,
-                    size: 30,
+                    size: 25,
                     color: context.read<SelectedMenu>().pushStack.isEmpty
                         ? Theme.of(context).iconTheme.color!.withOpacity(0.3)
                         : Theme.of(context).iconTheme.color,
@@ -56,11 +58,11 @@ class PGLAppBar extends StatelessWidget {
             !context.watch<Network>().isConnected
                 ? Icon(
                     Icons.wifi_off_rounded,
-                    size: 30,
+                    size: 20,
                     color: Colors.red,
                   )
                 : SizedBox.shrink(),
-            SizedBox(width: 10),
+            SizedBox(width: 20),
           ],
         ),
       ),

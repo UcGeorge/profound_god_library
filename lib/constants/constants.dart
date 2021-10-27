@@ -1,5 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:profoundgodlibrary/src/database/schema/readable.dart';
+
+Map<String, Readable> demoData = {
+  "martialpeak": Readable.fromJson({
+    "name": "Martial Peak",
+    "coverPicture": "C:/Users/Public/Documents/PGL/images/600.jpg",
+    "type": "novel",
+    "imageType": "local",
+    "chapters": {}
+  }),
+  "ninestarhegemonbodyart": Readable.fromJson({
+    "name": "Nine Star Hegemon Body Art",
+    "coverPicture": "C:/Users/Public/Documents/PGL/Manga/TestManga/cover.jpg",
+    "type": "manga",
+    "imageType": "local",
+    "chapters": {}
+  }),
+  "starmartialgodtechnique": Readable.fromJson({
+    "name": "Star Martial God Technique",
+    "coverPicture": "C:/Users/Public/Documents/PGL/images/mw.png",
+    "type": "novel",
+    "imageType": "local",
+    "chapters": {}
+  }),
+  "talesofdemonsandgods": Readable.fromJson({
+    "name": "Tales Of Demons and Gods",
+    "coverPicture": "C:/Users/Public/Documents/PGL/images/30361129._SX318_.jpg",
+    "type": "novel",
+    "imageType": "local",
+    "chapters": {}
+  })
+};
 
 const Icon continueReadingIcon = Icon(
   Icons.play_arrow_rounded,

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:profoundgodlibrary/components/components.dart';
+import 'package:profoundgodlibrary/components/readable_view.dart';
 import 'package:profoundgodlibrary/constants/constants.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 
-class RecentSearches extends StatelessWidget {
-  const RecentSearches({
+class ReadableSection extends StatelessWidget {
+  const ReadableSection({
     Key? key,
     required this.readables,
+    required this.title,
   }) : super(key: key);
 
+  final String title;
   final List<Readable> readables;
 
   @override
@@ -17,7 +19,7 @@ class RecentSearches extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Recent Searches',
+          'Continue Reading',
           style: Theme.of(context).textTheme.headline2,
         ),
         SizedBox(height: 15),

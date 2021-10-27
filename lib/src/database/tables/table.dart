@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:profoundgodlibrary/src/LocalStorage.dart';
 import 'package:profoundgodlibrary/src/interfaces/jsonifiable.dart';
@@ -24,7 +26,7 @@ abstract class Schema<T> {
 
   @override
   String toString() {
-    return toJson().toString();
+    return jsonEncode(toJson());
   }
 
   void _initializeSchema() {
@@ -43,14 +45,27 @@ abstract class Schema<T> {
   }
 
   void update(String id, T data) {
-    this.data[id] = data;
+    this.data.update(id, (value) => data);
     context.read<LocalStorage>().stateData[schemaID]![id] =
         (data as Jsonifiable).toJson();
   }
 
   void insert(String id, T data) {
-    this.data[id] = data;
+    this.data.putIfAbsent(id, () => data);
     context.read<LocalStorage>().stateData[schemaID]![id] =
         (data as Jsonifiable).toJson();
+  }
+
+  void delete(String id) {
+    this.data.remove(id);
+    context.read<LocalStorage>().stateData[schemaID] = data;
+  }
+
+  Map<String, T> select(bool where(T element)) {
+    Map<String, T> result = {};
+    data.forEach((key, value) {
+      if (where(value)) result.putIfAbsent(key, () => value);
+    });
+    return result;
   }
 }
