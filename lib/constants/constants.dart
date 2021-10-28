@@ -17,7 +17,7 @@ Map<String, Readable> demoData = {
     "coverPicture": "C:/Users/Public/Documents/PGL/Manga/TestManga/cover.jpg",
     "type": "manga",
     "imageType": "local",
-    "lastRead": '',
+    "lastRead": DateTime.now().toString(),
     "lastChapterRead": '',
     "chapters": {}
   }),

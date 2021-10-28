@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:profoundgodlibrary/src/LocalStorage.dart';
+import 'package:profoundgodlibrary/src/database/database.dart';
 import 'package:profoundgodlibrary/src/interfaces/jsonifiable.dart';
 import 'package:provider/src/provider.dart';
 import 'package:profoundgodlibrary/src/interfaces/types.dart';
@@ -45,21 +46,25 @@ abstract class Schema<T> {
     }
   }
 
-  void update(String id, T data) {
+  void update(BuildContext context, String id, T data) {
     this.data.update(id, (value) => data);
     context.read<LocalStorage>().stateData[schemaID]![id] =
         (data as Jsonifiable).toJson()[id];
+    context.read<Database>().updateView();
   }
 
-  void insert(String id, T data) {
+  void insert(BuildContext context, String id, T data) {
     this.data.putIfAbsent(id, () => data);
     context.read<LocalStorage>().stateData[schemaID]![id] =
         (data as Jsonifiable).toJson()[id];
+    context.read<Database>().updateView();
   }
 
-  void delete(String id) {
+  void delete(BuildContext context, String id) {
     this.data.remove(id);
-    context.read<LocalStorage>().stateData[schemaID] = data;
+    (context.read<LocalStorage>().stateData[schemaID] as Map<String, dynamic>)
+        .remove(id);
+    context.read<Database>().updateView();
   }
 
   Map<String, T> select(bool where(T element)) {

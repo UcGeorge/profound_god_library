@@ -3,6 +3,9 @@ import 'package:profoundgodlibrary/components/components.dart';
 import 'package:profoundgodlibrary/components/AppBar.dart';
 import 'package:profoundgodlibrary/constants/constants.dart';
 import 'package:profoundgodlibrary/src/database/database.dart';
+import 'package:profoundgodlibrary/src/database/schema/readable.dart';
+import 'package:profoundgodlibrary/src/helpers.dart';
+import 'package:provider/src/provider.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -12,23 +15,31 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late Database database;
-
   @override
   void initState() {
     super.initState();
-    database = Database(context);
-    demoData.forEach((key, value) {
-      database.library.insert(key, value);
-    });
+    Future.delayed(
+        Duration.zero,
+        () => demoData.forEach((key, value) {
+              context.read<Database>().library.insert(context, key, value);
+            }));
   }
 
   @override
   Widget build(BuildContext context) {
-    var recents = database.library.select((element) => element.id.length > 11);
-    var recentSearches =
-        database.library.select((element) => element.id.length <= 11);
-    var shortcuts = database.library.data;
+    var recents = Helper.sort<Readable>(
+        context
+            .watch<Database>()
+            .library
+            .select((element) => element.lastRead != null)
+            .values
+            .toList(),
+        (v1, v2) => v1.lastRead!.isAfter(v2.lastRead!));
+
+    var recentSearches = context.watch<Database>().searchHistory.data;
+
+    var shortcuts = context.watch<Database>().library.data;
+
     return Column(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,21 +64,23 @@ class _HomeViewState extends State<HomeView> {
                     ? SizedBox.shrink()
                     : ReadableSection(
                         title: 'Continue Reading',
-                        readables: recents.values.toList(),
+                        readables: recents,
                       ),
-                SizedBox(height: 30),
+                recents.isEmpty ? SizedBox.shrink() : SizedBox(height: 30),
                 recentSearches.isEmpty
                     ? SizedBox.shrink()
                     : ReadableSection(
                         title: 'Recent Searches',
                         readables: recentSearches.values.toList(),
                       ),
-                SizedBox(height: 30),
-                recents.isEmpty
+                recentSearches.isEmpty
+                    ? SizedBox.shrink()
+                    : SizedBox(height: 30),
+                shortcuts.isEmpty
                     ? SizedBox.shrink()
                     : ReadableSection(
                         title: 'Shortcuts',
-                        readables: recents.values.toList(),
+                        readables: shortcuts.values.toList(),
                       ),
                 SizedBox(height: 30),
               ],

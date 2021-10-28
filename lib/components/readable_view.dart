@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:profoundgodlibrary/constants/constants.dart';
+import 'package:profoundgodlibrary/src/database/database.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
+import 'package:provider/src/provider.dart';
 
 class ReadableView extends StatefulWidget {
   const ReadableView({
@@ -53,6 +55,7 @@ class _ReadableViewState extends State<ReadableView> {
               padding: EdgeInsets.only(top: 14, left: 14, right: 14),
               decoration: BoxDecoration(
                 color: Color(0xff262626),
+                // color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
@@ -118,37 +121,45 @@ class _ReadableViewState extends State<ReadableView> {
             isHovering
                 ? Align(
                     alignment: Alignment.bottomRight,
-                    child: MouseRegion(
-                      onEnter: _toogleExtendedHover,
-                      onExit: _toogleExtendedHover,
-                      cursor: SystemMouseCursors.click,
-                      child: AnimatedContainer(
-                        height: 25,
-                        width: extendedHover ? 80 : 25,
-                        duration: Duration(milliseconds: 100),
-                        margin: EdgeInsets.only(bottom: 6, right: 20),
-                        padding: extendedHover
-                            ? EdgeInsets.only(left: 8, right: 8)
-                            : EdgeInsets.only(),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.white.withOpacity(0.7),
-                        ),
-                        child: extendedHover
-                            ? Center(
-                                child: Text(
-                                  widget.hoverText,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.inter(
-                                    fontSize: 12,
-                                    color: Colors.black,
+                    child: GestureDetector(
+                      onTap: () {
+                        context
+                            .read<Database>()
+                            .library
+                            .delete(context, widget.readable.id);
+                      },
+                      child: MouseRegion(
+                        onEnter: _toogleExtendedHover,
+                        onExit: _toogleExtendedHover,
+                        cursor: SystemMouseCursors.click,
+                        child: AnimatedContainer(
+                          height: 25,
+                          width: extendedHover ? 80 : 25,
+                          duration: Duration(milliseconds: 100),
+                          margin: EdgeInsets.only(bottom: 6, right: 20),
+                          padding: extendedHover
+                              ? EdgeInsets.only(left: 8, right: 8)
+                              : EdgeInsets.only(),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: Colors.white.withOpacity(0.7),
+                          ),
+                          child: extendedHover
+                              ? Center(
+                                  child: Text(
+                                    widget.hoverText,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                    ),
                                   ),
+                                )
+                              : Center(
+                                  child: widget.hoverIcon,
                                 ),
-                              )
-                            : Center(
-                                child: widget.hoverIcon,
-                              ),
+                        ),
                       ),
                     ),
                   )

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:profoundgodlibrary/constants/constants.dart';
 import 'package:profoundgodlibrary/src/LocalStorage.dart';
 import 'package:profoundgodlibrary/Views/splash_view.dart';
+import 'package:profoundgodlibrary/src/database/database.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:profoundgodlibrary/src/Network.dart';
@@ -18,6 +19,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => LocalStorage()),
         ChangeNotifierProvider(create: (context) => Network()),
+        ChangeNotifierProvider(create: (context) => Database(context)),
       ],
       child: ProfoundGodLibrary(),
     ),
