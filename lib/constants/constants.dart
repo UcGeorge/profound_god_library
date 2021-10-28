@@ -8,6 +8,8 @@ Map<String, Readable> demoData = {
     "coverPicture": "C:/Users/Public/Documents/PGL/images/600.jpg",
     "type": "novel",
     "imageType": "local",
+    "lastRead": '',
+    "lastChapterRead": '',
     "chapters": {}
   }),
   "ninestarhegemonbodyart": Readable.fromJson({
@@ -15,6 +17,8 @@ Map<String, Readable> demoData = {
     "coverPicture": "C:/Users/Public/Documents/PGL/Manga/TestManga/cover.jpg",
     "type": "manga",
     "imageType": "local",
+    "lastRead": '',
+    "lastChapterRead": '',
     "chapters": {}
   }),
   "starmartialgodtechnique": Readable.fromJson({
@@ -22,6 +26,8 @@ Map<String, Readable> demoData = {
     "coverPicture": "C:/Users/Public/Documents/PGL/images/mw.png",
     "type": "novel",
     "imageType": "local",
+    "lastRead": '',
+    "lastChapterRead": '',
     "chapters": {}
   }),
   "talesofdemonsandgods": Readable.fromJson({
@@ -29,21 +35,11 @@ Map<String, Readable> demoData = {
     "coverPicture": "C:/Users/Public/Documents/PGL/images/30361129._SX318_.jpg",
     "type": "novel",
     "imageType": "local",
+    "lastRead": '',
+    "lastChapterRead": '',
     "chapters": {}
   })
 };
-
-const Icon continueReadingIcon = Icon(
-  Icons.play_arrow_rounded,
-  color: Colors.black,
-  size: 18,
-);
-
-const Icon addToLibrary = Icon(
-  Icons.add,
-  color: Colors.black,
-  size: 18,
-);
 
 final List<Color> colors = [
   Colors.green,

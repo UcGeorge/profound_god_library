@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:profoundgodlibrary/components/hover_icons.dart';
 import 'package:profoundgodlibrary/components/readable_view.dart';
-import 'package:profoundgodlibrary/constants/constants.dart';
+import 'package:profoundgodlibrary/src/database/database.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 
 class ReadableSection extends StatelessWidget {
@@ -19,7 +20,7 @@ class ReadableSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Continue Reading',
+          title,
           style: Theme.of(context).textTheme.headline2,
         ),
         SizedBox(height: 15),
@@ -38,8 +39,30 @@ class ReadableSection extends StatelessWidget {
   Widget _buildNovels(BuildContext context, int i) {
     return ReadableView(
       readable: readables[i],
-      hoverIcon: continueReadingIcon,
-      hoverText: 'Continue',
+      hoverIcon: _hoverIcon(context, readables[i]),
+      hoverText: _hoverText(context, readables[i]),
     );
+  }
+
+  Widget _hoverIcon(BuildContext context, Readable readable) {
+    if (!Database(context)
+        .library
+        .contains((element) => element.id == readable.id)) {
+      return addToLibraryIcon;
+    } else {
+      return continueReadingIcon;
+    }
+  }
+
+  String _hoverText(BuildContext context, Readable readable) {
+    if (!Database(context)
+        .library
+        .contains((element) => element.id == readable.id)) {
+      return '+ Library';
+    } else if (readable.lastChapterRead == '') {
+      return 'Start';
+    } else {
+      return 'Continue';
+    }
   }
 }

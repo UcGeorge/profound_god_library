@@ -33,7 +33,8 @@ abstract class Schema<T> {
     try {
       print('StateData: ${context.read<LocalStorage>().stateData}');
       if (!context.read<LocalStorage>().stateData.containsKey(schemaID)) {
-        context.read<LocalStorage>().stateData[schemaID] = {};
+        Map<String, dynamic> _temp = {};
+        context.read<LocalStorage>().stateData[schemaID] = _temp;
         print(
             'database doesn\'t contain $schemaID\nStateData: ${context.read<LocalStorage>().stateData}');
       }
@@ -47,13 +48,13 @@ abstract class Schema<T> {
   void update(String id, T data) {
     this.data.update(id, (value) => data);
     context.read<LocalStorage>().stateData[schemaID]![id] =
-        (data as Jsonifiable).toJson();
+        (data as Jsonifiable).toJson()[id];
   }
 
   void insert(String id, T data) {
     this.data.putIfAbsent(id, () => data);
     context.read<LocalStorage>().stateData[schemaID]![id] =
-        (data as Jsonifiable).toJson();
+        (data as Jsonifiable).toJson()[id];
   }
 
   void delete(String id) {
@@ -67,5 +68,10 @@ abstract class Schema<T> {
       if (where(value)) result.putIfAbsent(key, () => value);
     });
     return result;
+  }
+
+  bool contains(bool condition(T element)) {
+    for (String m in data.keys) if (condition(data[m]!)) return true;
+    return false;
   }
 }

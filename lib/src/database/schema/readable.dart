@@ -8,11 +8,15 @@ class Readable extends Jsonifiable {
   final String name;
   final CoverPicture coverPicture;
   final ReadableType readableType;
+  final DateTime? lastRead;
+  final String? lastChapterRead;
 
   Readable(
     this.name,
     this.coverPicture,
     this.readableType,
+    this.lastRead,
+    this.lastChapterRead,
   ) : id = Helper.getID(name);
 
   Readable.fromJson(Map<String, dynamic> json)
@@ -22,7 +26,11 @@ class Readable extends Jsonifiable {
             json["type"] == "novel" ? ReadableType.Novel : ReadableType.Manga,
         coverPicture = json['imageType'] == "local"
             ? CoverPicture(false, json['coverPicture'])
-            : CoverPicture(true, json['coverPicture']);
+            : CoverPicture(true, json['coverPicture']),
+        lastRead = (json['lastRead'] as String).isEmpty
+            ? null
+            : DateTime.parse(json['lastRead']),
+        lastChapterRead = json['lastChapterRead'];
 
   Map<String, dynamic> toJson() => {
         id: {
@@ -30,6 +38,8 @@ class Readable extends Jsonifiable {
           'type': readableType == ReadableType.Novel ? 'novel' : 'manga',
           'imageType': coverPicture.isOnline ? 'online' : 'local',
           'coverPicture': coverPicture.link,
+          'lastRead': lastRead?.toString() ?? '',
+          'lastChapterRead': lastChapterRead ?? '',
         }
       };
 
