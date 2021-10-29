@@ -18,7 +18,7 @@ Map<String, Readable> demoData = {
     "type": "manga",
     "imageType": "local",
     "lastRead": DateTime.now().toString(),
-    "lastChapterRead": '',
+    "lastChapterRead": 'chapter 1',
     "chapters": {}
   }),
   "starmartialgodtechnique": Readable.fromJson({
@@ -32,6 +32,78 @@ Map<String, Readable> demoData = {
   }),
   "talesofdemonsandgods": Readable.fromJson({
     "name": "Tales Of Demons and Gods",
+    "coverPicture": "C:/Users/Public/Documents/PGL/images/30361129._SX318_.jpg",
+    "type": "novel",
+    "imageType": "local",
+    "lastRead": '',
+    "lastChapterRead": '',
+    "chapters": {}
+  }),
+  "martialpeaka": Readable.fromJson({
+    "name": "Martial Peaka",
+    "coverPicture": "C:/Users/Public/Documents/PGL/images/600.jpg",
+    "type": "novel",
+    "imageType": "local",
+    "lastRead": '',
+    "lastChapterRead": '',
+    "chapters": {}
+  }),
+  "ninestarhegemonbodyarta": Readable.fromJson({
+    "name": "Nine Star Hegemon Body Arta",
+    "coverPicture": "C:/Users/Public/Documents/PGL/Manga/TestManga/cover.jpg",
+    "type": "manga",
+    "imageType": "local",
+    "lastRead": DateTime.now().toString(),
+    "lastChapterRead": 'chapter 1',
+    "chapters": {}
+  }),
+  "starmartialgodtechniquea": Readable.fromJson({
+    "name": "Star Martial God Techniquea",
+    "coverPicture": "C:/Users/Public/Documents/PGL/images/mw.png",
+    "type": "novel",
+    "imageType": "local",
+    "lastRead": '',
+    "lastChapterRead": '',
+    "chapters": {}
+  }),
+  "talesofdemonsandgodsa": Readable.fromJson({
+    "name": "Tales Of Demons and Godsa",
+    "coverPicture": "C:/Users/Public/Documents/PGL/images/30361129._SX318_.jpg",
+    "type": "novel",
+    "imageType": "local",
+    "lastRead": '',
+    "lastChapterRead": '',
+    "chapters": {}
+  }),
+  "martialpeakb": Readable.fromJson({
+    "name": "Martial Peakb",
+    "coverPicture": "C:/Users/Public/Documents/PGL/images/600.jpg",
+    "type": "novel",
+    "imageType": "local",
+    "lastRead": '',
+    "lastChapterRead": '',
+    "chapters": {}
+  }),
+  "ninestarhegemonbodyartb": Readable.fromJson({
+    "name": "Nine Star Hegemon Body Artb",
+    "coverPicture": "C:/Users/Public/Documents/PGL/Manga/TestManga/cover.jpg",
+    "type": "manga",
+    "imageType": "local",
+    "lastRead": DateTime.now().toString(),
+    "lastChapterRead": 'chapter 1',
+    "chapters": {}
+  }),
+  "starmartialgodtechniqueb": Readable.fromJson({
+    "name": "Star Martial God Techniqueb",
+    "coverPicture": "C:/Users/Public/Documents/PGL/images/mw.png",
+    "type": "novel",
+    "imageType": "local",
+    "lastRead": '',
+    "lastChapterRead": '',
+    "chapters": {}
+  }),
+  "talesofdemonsandgodsb": Readable.fromJson({
+    "name": "Tales Of Demons and Godsb",
     "coverPicture": "C:/Users/Public/Documents/PGL/images/30361129._SX318_.jpg",
     "type": "novel",
     "imageType": "local",

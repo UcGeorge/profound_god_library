@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profoundgodlibrary/components/components.dart';
 import 'package:profoundgodlibrary/components/hover_icons.dart';
 import 'package:profoundgodlibrary/components/readable_view.dart';
 import 'package:profoundgodlibrary/src/database/database.dart';
@@ -9,28 +10,41 @@ class ReadableSection extends StatelessWidget {
     Key? key,
     required this.readables,
     required this.title,
+    required this.seeMore,
   }) : super(key: key);
 
   final String title;
   final List<Readable> readables;
+  final VoidCallback seeMore;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headline2,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.headline2,
+            ),
+            readables.length > 10
+                ? SeeMoreButton(seeMore: seeMore)
+                : SizedBox.shrink(),
+          ],
         ),
         SizedBox(height: 15),
-        SizedBox(
-          height: 212,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: _buildNovels,
-            itemCount: readables.length,
-          ),
+        Wrap(
+          runSpacing: 15,
+          spacing: 15,
+          children: [
+            for (int i = 0;
+                i < (readables.length <= 10 ? readables.length : 10);
+                i++)
+              _buildNovels(context, i)
+          ],
         )
       ],
     );
@@ -49,6 +63,8 @@ class ReadableSection extends StatelessWidget {
         .library
         .contains((element) => element.id == readable.id)) {
       return addToLibraryIcon;
+    } else if (readable.lastChapterRead?.isEmpty ?? true) {
+      return startReadingIcon;
     } else {
       return continueReadingIcon;
     }
@@ -59,7 +75,7 @@ class ReadableSection extends StatelessWidget {
         .library
         .contains((element) => element.id == readable.id)) {
       return '+ Library';
-    } else if (readable.lastChapterRead == '') {
+    } else if (readable.lastChapterRead?.isEmpty ?? true) {
       return 'Start';
     } else {
       return 'Continue';

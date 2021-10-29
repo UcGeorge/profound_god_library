@@ -31,7 +31,7 @@ class _HomeViewState extends State<HomeView> {
         context
             .watch<Database>()
             .library
-            .select((element) => element.lastRead != null)
+            .select((element) => !(element.lastChapterRead?.isEmpty ?? true))
             .values
             .toList(),
         (v1, v2) => v1.lastRead!.isAfter(v2.lastRead!));
@@ -65,6 +65,7 @@ class _HomeViewState extends State<HomeView> {
                     : ReadableSection(
                         title: 'Continue Reading',
                         readables: recents,
+                        seeMore: () {},
                       ),
                 recents.isEmpty ? SizedBox.shrink() : SizedBox(height: 30),
                 recentSearches.isEmpty
@@ -72,6 +73,7 @@ class _HomeViewState extends State<HomeView> {
                     : ReadableSection(
                         title: 'Recent Searches',
                         readables: recentSearches.values.toList(),
+                        seeMore: () {},
                       ),
                 recentSearches.isEmpty
                     ? SizedBox.shrink()
@@ -81,6 +83,7 @@ class _HomeViewState extends State<HomeView> {
                     : ReadableSection(
                         title: 'Shortcuts',
                         readables: shortcuts.values.toList(),
+                        seeMore: () {},
                       ),
                 SizedBox(height: 30),
               ],

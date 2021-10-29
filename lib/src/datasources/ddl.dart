@@ -1,8 +1,8 @@
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 import 'package:profoundgodlibrary/src/datasources/datasources.dart';
 
-class WuxiaWorld extends DataSource {
-  WuxiaWorld() : super('Wuxia World');
+class DivineDaoLibrary extends DataSource {
+  DivineDaoLibrary() : super('Divine Dao Library');
 
   @override
   String searchLink = '';

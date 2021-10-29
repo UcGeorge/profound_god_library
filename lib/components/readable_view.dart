@@ -47,11 +47,12 @@ class _ReadableViewState extends State<ReadableView> {
       onExit: _toogleHover,
       child: SizedBox(
         width: 146,
+        height: 212,
         child: Stack(
           children: [
             Container(
               width: 146,
-              margin: EdgeInsets.only(right: 15),
+              height: 212,
               padding: EdgeInsets.only(top: 14, left: 14, right: 14),
               decoration: BoxDecoration(
                 color: Color(0xff262626),
@@ -134,9 +135,11 @@ class _ReadableViewState extends State<ReadableView> {
                         cursor: SystemMouseCursors.click,
                         child: AnimatedContainer(
                           height: 25,
-                          width: extendedHover ? 80 : 25,
+                          width: extendedHover
+                              ? (widget.hoverText != 'Start' ? 80 : 60)
+                              : 25,
                           duration: Duration(milliseconds: 100),
-                          margin: EdgeInsets.only(bottom: 6, right: 20),
+                          margin: EdgeInsets.only(bottom: 6, right: 6),
                           padding: extendedHover
                               ? EdgeInsets.only(left: 8, right: 8)
                               : EdgeInsets.only(),

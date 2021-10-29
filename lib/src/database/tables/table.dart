@@ -34,8 +34,7 @@ abstract class Schema<T> {
     try {
       print('StateData: ${context.read<LocalStorage>().stateData}');
       if (!context.read<LocalStorage>().stateData.containsKey(schemaID)) {
-        Map<String, dynamic> _temp = {};
-        context.read<LocalStorage>().stateData[schemaID] = _temp;
+        context.read<LocalStorage>().stateData[schemaID] = <String, dynamic>{};
         print(
             'database doesn\'t contain $schemaID\nStateData: ${context.read<LocalStorage>().stateData}');
       }
