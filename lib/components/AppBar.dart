@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profoundgodlibrary/components/search_box.dart';
 import 'package:profoundgodlibrary/src/Network.dart';
 import 'package:profoundgodlibrary/src/SelectedMenu.dart';
 import 'package:provider/src/provider.dart';
@@ -54,6 +55,10 @@ class PGLAppBar extends StatelessWidget {
                 )
               ],
             ),
+            SizedBox(width: 20),
+            context.read<SelectedMenu>().selectedMenu == 'Search'
+                ? SearchBox()
+                : SizedBox.shrink(),
             Spacer(),
             !context.watch<Network>().isConnected
                 ? Icon(

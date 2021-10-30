@@ -51,8 +51,6 @@ class _ReadableViewState extends State<ReadableView> {
         child: Stack(
           children: [
             Container(
-              width: 146,
-              height: 212,
               padding: EdgeInsets.only(top: 14, left: 14, right: 14),
               decoration: BoxDecoration(
                 color: Color(0xff262626),

@@ -32,11 +32,11 @@ class _SeeMoreButtonState extends State<SeeMoreButton> {
         child: Text(
           'SEE ALL',
           style: Theme.of(context).textTheme.headline2!.copyWith(
-                fontSize: 14,
-                color: isHovering
-                    ? Colors.white.withOpacity(0.8)
-                    : Colors.white.withOpacity(0.5),
-              ),
+              fontSize: 12,
+              color: isHovering
+                  ? Colors.white.withOpacity(0.8)
+                  : Colors.white.withOpacity(0.5),
+              letterSpacing: 1.5),
         ),
       ),
     );
