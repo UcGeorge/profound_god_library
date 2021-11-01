@@ -8,8 +8,9 @@ class DivineDaoLibrary extends DataSource {
   String searchLink = '';
 
   @override
-  List<Readable> search(String searchTerm) {
+  Future<List<Readable>> search(String searchTerm) async {
     // TODO: implement search
-    throw UnimplementedError();
+    // throw UnimplementedError();
+    return <Readable>[];
   }
 }

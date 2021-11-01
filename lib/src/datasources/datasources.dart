@@ -11,7 +11,7 @@ abstract class DataSource {
   abstract String searchLink;
 
   DataSource(this.dataSourceID);
-  List<Readable> search(String searchTerm);
+  Future<List<Readable>> search(String searchTerm);
   // String searchLink();
 }
 
@@ -21,9 +21,12 @@ class DataSources {
     WuxiaWorld(),
     DivineDaoLibrary(),
   ];
-  static Map<String, List<Readable>> search(String searchTerm) {
+  static Future<SearchResults> search(String searchTerm) async {
     return <String, List<Readable>>{
-      for (DataSource d in dataSources) d.dataSourceID: d.search(searchTerm)
+      for (DataSource d in dataSources)
+        d.dataSourceID: await d.search(searchTerm)
     };
   }
 }
+
+typedef SearchResults = Map<String, List<Readable>?>;

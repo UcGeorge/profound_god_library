@@ -74,7 +74,7 @@ class ReadableSection extends StatelessWidget {
     if (!Database(context)
         .library
         .contains((element) => element.id == readable.id)) {
-      return '+ Library';
+      return 'Library';
     } else if (readable.lastChapterRead?.isEmpty ?? true) {
       return 'Start';
     } else {
