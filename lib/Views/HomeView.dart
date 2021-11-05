@@ -16,22 +16,12 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   @override
-  void initState() {
-    super.initState();
-    Future.delayed(
-        Duration.zero,
-        () => demoData.forEach((key, value) {
-              context.read<Database>().library.insert(context, key, value);
-            }));
-  }
-
-  @override
   Widget build(BuildContext context) {
     var recents = Helper.sort<Readable>(
         context
             .watch<Database>()
             .library
-            .select((element) => !(element.lastChapterRead?.isEmpty ?? true))
+            .select((element) => element.lastChapterRead.isNotEmpty)
             .values
             .toList(),
         (v1, v2) => v1.lastRead!.isAfter(v2.lastRead!));

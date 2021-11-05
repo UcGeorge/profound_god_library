@@ -13,4 +13,10 @@ class DivineDaoLibrary extends DataSource {
     // throw UnimplementedError();
     return <Readable>[];
   }
+
+  @override
+  Future<ReadableDetails?> details(String link) async {
+    // TODO: implement details
+    throw UnimplementedError();
+  }
 }

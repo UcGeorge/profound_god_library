@@ -31,7 +31,7 @@ class _SearchViewState extends State<SearchView> {
         context
             .watch<Database>()
             .library
-            .select((element) => !(element.lastChapterRead?.isEmpty ?? true))
+            .select((element) => element.lastChapterRead.isNotEmpty)
             .values
             .toList(),
         (v1, v2) => v1.lastRead!.isAfter(v2.lastRead!));

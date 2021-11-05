@@ -63,7 +63,7 @@ class ReadableSection extends StatelessWidget {
         .library
         .contains((element) => element.id == readable.id)) {
       return addToLibraryIcon;
-    } else if (readable.lastChapterRead?.isEmpty ?? true) {
+    } else if (readable.lastChapterRead.isEmpty) {
       return startReadingIcon;
     } else {
       return continueReadingIcon;
@@ -75,7 +75,7 @@ class ReadableSection extends StatelessWidget {
         .library
         .contains((element) => element.id == readable.id)) {
       return 'Library';
-    } else if (readable.lastChapterRead?.isEmpty ?? true) {
+    } else if (readable.lastChapterRead.isEmpty) {
       return 'Start';
     } else {
       return 'Continue';

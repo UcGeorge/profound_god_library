@@ -12,6 +12,7 @@ abstract class DataSource {
 
   DataSource(this.dataSourceID);
   Future<List<Readable>> search(String searchTerm);
+  Future<ReadableDetails?> details(String link);
   // String searchLink();
 }
 
@@ -26,6 +27,13 @@ class DataSources {
       for (DataSource d in dataSources)
         d.dataSourceID: await d.search(searchTerm)
     };
+  }
+
+  static Future<ReadableDetails?> details(String link, String source) async {
+    return await dataSources
+        .where((element) => element.dataSourceID == source)
+        .first
+        .details(link);
   }
 }
 

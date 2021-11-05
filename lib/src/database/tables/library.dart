@@ -7,7 +7,7 @@ class Library extends Schema<Readable> {
 
   @override
   void initializeData() {
-    data =
-        jsonData.map((key, value) => MapEntry(key, Readable.fromJson(value)));
+    data = jsonData
+        .map((key, value) => MapEntry(key, Readable.fromDatabase(value)));
   }
 }

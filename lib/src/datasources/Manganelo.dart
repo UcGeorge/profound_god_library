@@ -16,7 +16,7 @@ class Manganelo extends DataSource {
     var request = Request(
         'GET',
         Uri.parse(
-            'http://localhost:5001/profound-god-library-9dc0b/us-central1/search'));
+            'http://localhost:5001/profound-god-library-9dc0b/us-central1/search')); // TODO: Change the link in production
     request.bodyFields = {
       'term': searchTerm,
       'source': dataSourceID.toLowerCase()
@@ -28,11 +28,31 @@ class Manganelo extends DataSource {
     if (response.statusCode == 200) {
       return <Readable>[
         for (dynamic r in jsonDecode(await response.stream.bytesToString()))
-          Readable.fromJson(r)
+          Readable.fronServer(r)
       ];
     } else {
       print(jsonDecode(await response.stream.bytesToString())['message']);
       return [];
+    }
+  }
+
+  @override
+  Future<ReadableDetails?> details(String link) async {
+    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    var request = Request(
+        'GET',
+        Uri.parse(
+            'http://localhost:5001/profound-god-library-9dc0b/us-central1/details')); // TODO: Change the link in production
+    request.bodyFields = {'link': link, 'source': dataSourceID.toLowerCase()};
+    request.headers.addAll(headers);
+
+    StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return ReadableDetails.fromServer(
+          jsonDecode(await response.stream.bytesToString()));
+    } else {
+      print(jsonDecode(await response.stream.bytesToString())['message']);
     }
   }
 }
