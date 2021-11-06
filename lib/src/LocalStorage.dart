@@ -14,9 +14,7 @@ class LocalStorage extends ChangeNotifier {
 
   void _saveData() async {
     while (true) {
-      print('saving data');
       if (!await directory.exists()) {
-        print("Creating directory");
         await directory.create(recursive: true);
       }
 
@@ -30,10 +28,7 @@ class LocalStorage extends ChangeNotifier {
 
   void initializeDirectory() async {
     try {
-      print("Initializing local storage");
-
       if (!await directory.exists()) {
-        print("Creating directory");
         await directory.create(recursive: true);
       }
 
@@ -49,9 +44,6 @@ class LocalStorage extends ChangeNotifier {
         String contents = await dataFile.readAsString();
         stateData = jsonDecode(contents);
       }
-
-      print(directory.path);
-      print(stateData);
       isBusy = false;
       notifyListeners();
     } catch (ex) {
@@ -61,7 +53,6 @@ class LocalStorage extends ChangeNotifier {
       notifyListeners();
       print('initializeDirectory exception: $ex');
     }
-    print("Initializing local storage");
     _saveData();
   }
 }

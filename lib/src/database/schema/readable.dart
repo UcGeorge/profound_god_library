@@ -10,24 +10,27 @@ class Readable extends Jsonifiable {
   final String id;
   final String name;
   final ReadableType readableType;
+  final String link;
   CoverPicture coverPicture;
   DateTime? lastRead;
   String lastChapterRead;
   List? chapters;
   ReadableDetails? _readableDetails;
+  final String source;
 
   ReadableDetails? get readableDetails => _readableDetails;
 
   void setReadableDetails(
       ReadableDetails readableDetails, BuildContext context) {
     _readableDetails = readableDetails;
-    context.read<Database>().library.update(context, id, this);
   }
 
   Readable(
     this.name,
+    this.link,
     this.coverPicture,
     this.readableType,
+    this.source,
     this.lastRead,
     this.lastChapterRead,
   ) : id = Helper.getID(name);
@@ -43,7 +46,9 @@ class Readable extends Jsonifiable {
         lastRead = (json['lastRead'] as String).isEmpty
             ? null
             : DateTime.parse(json['lastRead']),
-        lastChapterRead = json['lastChapterRead'];
+        lastChapterRead = json['lastChapterRead'],
+        link = json['link'],
+        source = json['source'];
 
   Readable.fromDatabase(Map<String, dynamic> json)
       : id = Helper.getID(json['name']),
@@ -62,11 +67,14 @@ class Readable extends Jsonifiable {
             rating: json['rating'],
             description: json['description'],
             chapterCount: (json['chapters']).length),
-        chapters = json['chapters'];
+        chapters = json['chapters'],
+        link = json['link'],
+        source = json['source'];
 
   Map<String, dynamic> toJson() => {
         id: {
           'name': name,
+          'link': link,
           'type': readableType == ReadableType.Novel ? 'novel' : 'manga',
           'imageType': coverPicture.isOnline ? 'online' : 'local',
           'coverPicture': coverPicture.link,
@@ -109,10 +117,10 @@ class ReadableDetails {
   });
 
   ReadableDetails.fromServer(Map<String, dynamic> json)
-      : status = json['status'],
-        rating = json['rating'],
-        description = json['description'],
-        chapterCount = json['chapterCount'],
+      : status = json['status'].toString().trim(),
+        rating = json['rating'].toString().trim(),
+        description = json['description'].toString().trim(),
+        chapterCount = json['chapter_count'],
         metaChapters = [
           for (Map<String, dynamic> e in json['chapters'])
             MetaChapter.fromJson(e)

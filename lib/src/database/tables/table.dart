@@ -46,10 +46,14 @@ abstract class Schema<T> {
   }
 
   void update(BuildContext context, String id, T data) {
-    this.data.update(id, (value) => data);
-    context.read<LocalStorage>().stateData[schemaID]![id] =
-        (data as Jsonifiable).toJson()[id];
-    context.read<Database>().updateView();
+    try {
+      this.data.update(id, (value) => data);
+      context.read<LocalStorage>().stateData[schemaID]![id] =
+          (data as Jsonifiable).toJson()[id];
+      context.read<Database>().updateView();
+    } catch (e) {
+      insert(context, id, data);
+    }
   }
 
   void insert(BuildContext context, String id, T data) {
