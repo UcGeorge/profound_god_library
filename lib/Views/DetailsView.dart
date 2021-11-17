@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:profoundgodlibrary/components/details_view_context_buttons.dart';
 import 'package:profoundgodlibrary/components/rating_star.dart';
 import 'package:profoundgodlibrary/constants/constants.dart';
 import 'package:profoundgodlibrary/src/SelectedMenu.dart';
-import 'package:profoundgodlibrary/src/database/database.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 import 'package:profoundgodlibrary/src/datasources/datasources.dart';
 import 'package:profoundgodlibrary/src/details_plane_state.dart';
@@ -70,8 +70,8 @@ class _DetailsViewState extends State<DetailsView> {
                       );
                     }
                     print('Has results');
-                    widget.detailsPlaneState.readable!.setReadableDetails(
-                        (snapshot.data as ReadableDetails), context);
+                    widget.detailsPlaneState.readable!
+                        .setReadableDetails(snapshot.data as ReadableDetails);
                     return _buildDetails(context);
                   default:
                     return SpinKitSpinningLines(
@@ -102,6 +102,7 @@ class _DetailsViewState extends State<DetailsView> {
         const SizedBox(height: 20),
         Expanded(
           child: ListView(
+            controller: ScrollController(),
             children: [
               Text(
                 'DESCRIPTION',
@@ -246,43 +247,10 @@ class _DetailsViewState extends State<DetailsView> {
             ],
           ),
           const SizedBox(height: 5),
-          MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: Container(
-              height: 25,
-              padding: EdgeInsets.only(left: 8, right: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Colors.white.withOpacity(0.7),
-              ),
-              child: Center(
-                child: Text(
-                  _hoverText(context, widget.detailsPlaneState.readable!),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          DetailsViewContextButtons(widget.detailsPlaneState)
         ],
       ),
     );
-  }
-
-  String _hoverText(BuildContext context, Readable readable) {
-    if (!Database(context)
-        .library
-        .contains((element) => element.id == readable.id)) {
-      return 'Add to Library';
-    } else if (readable.lastChapterRead.isEmpty) {
-      return 'Start: ${widget.detailsPlaneState.readable!.readableDetails!.metaChapters!.last.name}';
-    } else {
-      return 'Continue: ${readable.lastChapterRead}';
-    }
   }
 
   Widget _buildCoverPhoto() {

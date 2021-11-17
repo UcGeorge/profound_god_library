@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:profoundgodlibrary/src/database/database.dart';
+import 'package:profoundgodlibrary/src/datasources/datasources.dart';
 import 'package:profoundgodlibrary/src/helpers.dart';
 import 'package:profoundgodlibrary/src/interfaces/jsonifiable.dart';
 import 'package:provider/src/provider.dart';
@@ -20,9 +21,15 @@ class Readable extends Jsonifiable {
 
   ReadableDetails? get readableDetails => _readableDetails;
 
-  void setReadableDetails(
-      ReadableDetails readableDetails, BuildContext context) {
+  void setReadableDetails(ReadableDetails readableDetails) {
     _readableDetails = readableDetails;
+  }
+
+  void addToLibrary(BuildContext context) async {
+    if (_readableDetails == null) {
+      _readableDetails = await DataSources.details(link, source);
+    }
+    context.read<Database>().library.insert(context, id, this);
   }
 
   Readable(
@@ -84,6 +91,7 @@ class Readable extends Jsonifiable {
           'rating': readableDetails?.rating ?? '',
           'description': readableDetails?.description ?? '',
           'chapters': chapters ?? [],
+          'source': source
         }
       };
 
