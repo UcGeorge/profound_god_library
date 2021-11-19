@@ -48,7 +48,7 @@ abstract class Schema<T> {
   void update(BuildContext context, String id, T data) {
     try {
       this.data.update(id, (value) => data);
-      context.read<LocalStorage>().stateData[schemaID]![id] =
+      context.read<LocalStorage>().stateData[schemaID][id] =
           (data as Jsonifiable).toJson()[id];
       context.read<Database>().updateView();
     } catch (e) {
@@ -57,8 +57,9 @@ abstract class Schema<T> {
   }
 
   void insert(BuildContext context, String id, T data) {
+    print('[INFO] Inserting data with ID: $id');
     this.data.putIfAbsent(id, () => data);
-    context.read<LocalStorage>().stateData[schemaID]![id] =
+    context.read<LocalStorage>().stateData[schemaID][id] =
         (data as Jsonifiable).toJson()[id];
     context.read<Database>().updateView();
   }

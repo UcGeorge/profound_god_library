@@ -41,7 +41,7 @@ class _DetailsViewContextButtonsState extends State<DetailsViewContextButtons> {
       onEnter: (e) => _toogleSecondHover(true),
       onExit: (e) => _toogleSecondHover(false),
       cursor: SystemMouseCursors.click,
-      child: InkWell(
+      child: GestureDetector(
         onTap: () => widget.detailsPlaneState.readable!.addToLibrary(context),
         child: AnimatedContainer(
           duration: Duration(milliseconds: 100),

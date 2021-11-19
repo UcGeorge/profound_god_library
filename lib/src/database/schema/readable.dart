@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:profoundgodlibrary/src/database/database.dart';
@@ -18,6 +19,7 @@ class Readable extends Jsonifiable {
   List? chapters;
   ReadableDetails? _readableDetails;
   final String source;
+  bool loading = false;
 
   ReadableDetails? get readableDetails => _readableDetails;
 
@@ -25,11 +27,31 @@ class Readable extends Jsonifiable {
     _readableDetails = readableDetails;
   }
 
-  void addToLibrary(BuildContext context) async {
+  Future<void> addToLibrary(BuildContext context) async {
+    print(context);
+    loading = true;
+    Directory imageDir = Directory(r'C:\Users\Public\Documents\PGL\images');
+    if (!await imageDir.exists()) {
+      print('[INFO] PGL/images does not exist');
+      await imageDir.create(recursive: true);
+    }
     if (_readableDetails == null) {
+      print('[INFO] Getting readable details');
       _readableDetails = await DataSources.details(link, source);
     }
+    if (coverPicture.isOnline) {
+      print('[INFO] Downloading cover pic');
+      var path = imageDir.path;
+      var name =
+          "\\${this.name}${coverPicture.link.substring(coverPicture.link.lastIndexOf('.'))}";
+      var onlineLink = coverPicture.link;
+      print('[INFO] Started download');
+      await Helper.downloadImage(Uri.parse(onlineLink), path, name);
+      coverPicture = CoverPicture(false, path + name);
+    }
+    print('[INFO] Updating library');
     context.read<Database>().library.insert(context, id, this);
+    loading = false;
   }
 
   Readable(
@@ -87,9 +109,9 @@ class Readable extends Jsonifiable {
           'coverPicture': coverPicture.link,
           'lastRead': lastRead?.toString() ?? '',
           'lastChapterRead': lastChapterRead,
-          'status': readableDetails?.status ?? '',
-          'rating': readableDetails?.rating ?? '',
-          'description': readableDetails?.description ?? '',
+          'status': _readableDetails?.status ?? '',
+          'rating': _readableDetails?.rating ?? '',
+          'description': _readableDetails?.description ?? '',
           'chapters': chapters ?? [],
           'source': source
         }
@@ -105,7 +127,7 @@ enum ReadableType { Manga, Novel }
 
 class CoverPicture {
   final bool isOnline;
-  final String? link;
+  final String link;
   const CoverPicture(this.isOnline, this.link);
 }
 

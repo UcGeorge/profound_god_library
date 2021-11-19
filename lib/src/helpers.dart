@@ -1,6 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
+import 'package:profoundgodlibrary/src/database/database.dart';
+import 'package:profoundgodlibrary/src/database/schema/readable.dart';
+import 'package:provider/src/provider.dart';
 
 class Helper {
   static String getID(String origin) {
@@ -42,5 +46,6 @@ class Helper {
     File file2 = new File(filePath + fileName); // * <-- 2
     file2.writeAsBytesSync(response.bodyBytes); // * <-- 3
     print('[INFO] Done writing to file');
+    print('[INFO] Finished download');
   }
 }

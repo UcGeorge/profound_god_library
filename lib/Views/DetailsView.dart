@@ -254,42 +254,30 @@ class _DetailsViewState extends State<DetailsView> {
   }
 
   Widget _buildCoverPhoto() {
-    return widget.detailsPlaneState.readable!.coverPicture.link == null
-        ? Container(
-            height: 200,
-            width: 200,
-            decoration: BoxDecoration(
-              color: colors[
-                  widget.detailsPlaneState.readable!.id.length % colors.length],
-              borderRadius: BorderRadius.circular(4),
-            ),
-          )
-        : ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: SizedBox(
-              height: 200,
-              width: 200,
-              child: widget.detailsPlaneState.readable!.coverPicture.isOnline
-                  ? Image.network(
-                      widget.detailsPlaneState.readable!.coverPicture.link!,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, o, s) => Container(
-                        height: 200,
-                        width: 200,
-                        decoration: BoxDecoration(
-                          color: colors[
-                              widget.detailsPlaneState.readable!.id.length %
-                                  colors.length],
-                        ),
-                      ),
-                    )
-                  : Image.file(
-                      File(widget
-                          .detailsPlaneState.readable!.coverPicture.link!),
-                      fit: BoxFit.cover,
-                    ),
-            ),
-          );
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(4),
+      child: SizedBox(
+        height: 200,
+        width: 200,
+        child: widget.detailsPlaneState.readable!.coverPicture.isOnline
+            ? Image.network(
+                widget.detailsPlaneState.readable!.coverPicture.link,
+                fit: BoxFit.cover,
+                errorBuilder: (context, o, s) => Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    color: colors[widget.detailsPlaneState.readable!.id.length %
+                        colors.length],
+                  ),
+                ),
+              )
+            : Image.file(
+                File(widget.detailsPlaneState.readable!.coverPicture.link),
+                fit: BoxFit.cover,
+              ),
+      ),
+    );
   }
 
   MouseRegion _closeButton(BuildContext context) {

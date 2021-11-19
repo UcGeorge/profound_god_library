@@ -53,32 +53,30 @@ class ReadableSection extends StatelessWidget {
   Widget _buildNovels(BuildContext context, int i) {
     return ReadableView(
       readable: readables[i],
-      hoverIcon: _hoverIcon(context, readables[i]),
-      hoverText: _hoverText(context, readables[i]),
     );
   }
 
-  Widget _hoverIcon(BuildContext context, Readable readable) {
-    if (!Database(context)
-        .library
-        .contains((element) => element.id == readable.id)) {
-      return addToLibraryIcon;
-    } else if (readable.lastChapterRead.isEmpty) {
-      return startReadingIcon;
-    } else {
-      return continueReadingIcon;
-    }
-  }
+  //* Widget _hoverIcon(BuildContext context, Readable readable) {
+  //*   if (!Database(context)
+  //*       .library
+  //*       .contains((element) => element.id == readable.id)) {
+  //*     return addToLibraryIcon;
+  //*   } else if (readable.lastChapterRead.isEmpty) {
+  //*     return startReadingIcon;
+  //*   } else {
+  //*     return continueReadingIcon;
+  //*   }
+  //* }
 
-  String _hoverText(BuildContext context, Readable readable) {
-    if (!Database(context)
-        .library
-        .contains((element) => element.id == readable.id)) {
-      return 'Library';
-    } else if (readable.lastChapterRead.isEmpty) {
-      return 'Start';
-    } else {
-      return 'Continue';
-    }
-  }
+  //* String _hoverText(BuildContext context, Readable readable) {
+  //*   if (!Database(context)
+  //*       .library
+  //*       .contains((element) => element.id == readable.id)) {
+  //*     return 'Library';
+  //*   } else if (readable.lastChapterRead.isEmpty) {
+  //*     return 'Start';
+  //*   } else {
+  //*     return 'Continue';
+  //*   }
+  //* }
 }
