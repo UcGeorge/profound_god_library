@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:http/http.dart';
+
 class Helper {
   static String getID(String origin) {
     String ac = 'abcdefghijklmnopqrstuvwxyz';
@@ -27,5 +31,16 @@ class Helper {
       result.removeAt(_minIndex);
     }
     return result;
+  }
+
+  static downloadImage(Uri url, String filePath, String fileName,
+      {String? referer}) async {
+    Map<String, String> headers = referer == null ? {} : {'referer': referer};
+    print('[INFO] Sending request: ${url.toString()}');
+    var response = await get(url, headers: headers); // * <--2
+    print('[INFO] Gotten response, writing to file: ${filePath + fileName}');
+    File file2 = new File(filePath + fileName); // * <-- 2
+    file2.writeAsBytesSync(response.bodyBytes); // * <-- 3
+    print('[INFO] Done writing to file');
   }
 }
