@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profoundgodlibrary/components/components.dart';
 import 'package:profoundgodlibrary/components/AppBar.dart';
-import 'package:profoundgodlibrary/constants/constants.dart';
 import 'package:profoundgodlibrary/src/database/database.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 import 'package:profoundgodlibrary/src/helpers.dart';

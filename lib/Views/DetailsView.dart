@@ -247,7 +247,10 @@ class _DetailsViewState extends State<DetailsView> {
             ],
           ),
           const SizedBox(height: 5),
-          DetailsViewContextButtons(widget.detailsPlaneState)
+          DetailsViewContextButtons(
+            widget.detailsPlaneState,
+            parentContext: context,
+          )
         ],
       ),
     );

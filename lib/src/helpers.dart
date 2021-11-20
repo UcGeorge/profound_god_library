@@ -1,10 +1,5 @@
 import 'dart:io';
-
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
-import 'package:profoundgodlibrary/src/database/database.dart';
-import 'package:profoundgodlibrary/src/database/schema/readable.dart';
-import 'package:provider/src/provider.dart';
 
 class Helper {
   static String getID(String origin) {
@@ -20,7 +15,7 @@ class Helper {
   }
 
   static List<T> sort<T>(List<T> data, bool compare(T v1, T v2)) {
-    print('sorting $data');
+    //! print('sorting $data');
     List<T> result = data;
     for (int i = 0; i < result.length; i++) {
       T _min = result[i];

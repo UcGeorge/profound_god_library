@@ -17,3 +17,9 @@ const Icon addToLibraryIcon = Icon(
   color: Colors.black,
   size: 18,
 );
+
+final Icon deleteIcon = Icon(
+  Icons.delete,
+  color: Colors.black.withOpacity(0.8),
+  size: 16,
+);

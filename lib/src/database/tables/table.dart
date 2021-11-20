@@ -32,11 +32,10 @@ abstract class Schema<T> {
 
   void _initializeSchema() {
     try {
-      print('StateData: ${context.read<LocalStorage>().stateData}');
+      //! print('StateData: ${context.read<LocalStorage>().stateData}');
       if (!context.read<LocalStorage>().stateData.containsKey(schemaID)) {
         context.read<LocalStorage>().stateData[schemaID] = <String, dynamic>{};
-        print(
-            'database doesn\'t contain $schemaID\nStateData: ${context.read<LocalStorage>().stateData}');
+        //! print('database doesn\'t contain $schemaID\nStateData: ${context.read<LocalStorage>().stateData}');
       }
 
       jsonData = context.read<LocalStorage>().stateData[schemaID]!;
