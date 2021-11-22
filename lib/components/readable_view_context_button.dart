@@ -21,12 +21,10 @@ class ReadableViewContextButton extends StatelessWidget {
         ? RVContextButton(
             readable,
             fullWidth: 74,
-            icon: deleteIcon,
-            text: 'Remove',
+            icon: startReadingIcon,
+            text: 'Start',
             action: (toogleFlag) async {
-              toogleFlag();
-              context.read<Database>().library.delete(context, readable.id);
-              toogleFlag();
+              //TODO: Implement chapters
             },
           )
         : RVContextButton(

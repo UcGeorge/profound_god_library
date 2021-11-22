@@ -16,15 +16,34 @@ class Readable extends Jsonifiable {
   CoverPicture coverPicture;
   DateTime? lastRead;
   String lastChapterRead;
-  List? chapters;
+  List<Chapter> chapters;
   ReadableDetails? _readableDetails;
   final String source;
   bool loading = false;
 
   ReadableDetails? get readableDetails => _readableDetails;
 
-  void setReadableDetails(ReadableDetails readableDetails) {
+  void setReadableDetails(ReadableDetails? readableDetails) {
     _readableDetails = readableDetails;
+    chapters = readableDetails?.metaChapters
+            ?.map((e) => Chapter.fromMeta(e))
+            .toList() ??
+        [];
+  }
+
+  void updateChapters(BuildContext context, List<MetaChapter> metaChaps) {
+    _updateSelfFromDb(context);
+    _readableDetails!.metaChapters?.insertAll(0, metaChaps);
+    chapters.insertAll(0, metaChaps.map((e) => Chapter.fromMeta(e)));
+    context.read<Database>().library.update(context, id, this);
+  }
+
+  void _updateSelfFromDb(BuildContext context) {
+    Readable? thisFromDb =
+        context.read<Database>().library.select((r) => r.id == id)[id];
+    lastRead = thisFromDb?.lastRead ?? lastRead;
+    lastChapterRead = thisFromDb?.lastChapterRead ?? lastChapterRead;
+    chapters = thisFromDb?.chapters ?? chapters;
   }
 
   Future<void> addToLibrary(BuildContext context) async {
@@ -37,7 +56,7 @@ class Readable extends Jsonifiable {
     }
     if (_readableDetails == null) {
       print('[INFO] Getting readable details');
-      _readableDetails = await DataSources.details(link, source);
+      setReadableDetails(await DataSources.details(link, source));
     }
     if (coverPicture.isOnline) {
       print('[INFO] Downloading cover pic');
@@ -62,7 +81,8 @@ class Readable extends Jsonifiable {
     this.source,
     this.lastRead,
     this.lastChapterRead,
-  ) : id = Helper.getID(name);
+  )   : id = Helper.getID(name),
+        chapters = [];
 
   Readable.fronServer(Map<String, dynamic> json)
       : id = Helper.getID(json['name']),
@@ -77,7 +97,8 @@ class Readable extends Jsonifiable {
             : DateTime.parse(json['lastRead']),
         lastChapterRead = json['lastChapterRead'],
         link = json['link'],
-        source = json['source'];
+        source = json['source'],
+        chapters = [];
 
   Readable.fromDatabase(Map<String, dynamic> json)
       : id = Helper.getID(json['name']),
@@ -95,10 +116,14 @@ class Readable extends Jsonifiable {
             status: json['status'],
             rating: json['rating'],
             description: json['description'],
-            chapterCount: (json['chapters']).length),
-        chapters = json['chapters'],
+            chapterCount: (json['chapters']).length,
+            metaChapters: (json['chapters'] as List)
+                .map((e) => MetaChapter.fromJson(e))
+                .toList()),
         link = json['link'],
-        source = json['source'];
+        source = json['source'],
+        chapters =
+            (json['chapters'] as List).map((e) => Chapter.fromJson(e)).toList();
 
   Map<String, dynamic> toJson() => {
         id: {
@@ -112,8 +137,8 @@ class Readable extends Jsonifiable {
           'status': _readableDetails?.status ?? '',
           'rating': _readableDetails?.rating ?? '',
           'description': _readableDetails?.description ?? '',
-          'chapters': chapters ?? [],
-          'source': source
+          'source': source,
+          'chapters': chapters.map((e) => e.toJson()).toList()
         }
       };
 
@@ -165,4 +190,36 @@ class MetaChapter {
   MetaChapter.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         link = json['link'];
+
+  MetaChapter.fromChap(Chapter chapter)
+      : name = chapter.name,
+        link = chapter.link;
+}
+
+class Chapter extends Jsonifiable {
+  final String name;
+  final String link;
+  bool downloaded;
+
+  Chapter(this.name, this.link, {this.downloaded = false});
+  Chapter.fromMeta(MetaChapter metaChapter)
+      : name = metaChapter.name,
+        link = metaChapter.link,
+        downloaded = false;
+
+  Chapter.fromJson(Map<String, dynamic> json)
+      : name = json["name"],
+        link = json["link"],
+        downloaded = json["downloaded"] == "true" ? true : false;
+
+  @override
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "link": link,
+        "downloaded": downloaded ? "true" : "false",
+      };
+
+  Future<void> download() async {
+    downloaded = true;
+  }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:profoundgodlibrary/components/chapter_item.dart';
 import 'package:profoundgodlibrary/components/details_view_context_buttons.dart';
 import 'package:profoundgodlibrary/components/rating_star.dart';
 import 'package:profoundgodlibrary/constants/constants.dart';
@@ -69,10 +70,11 @@ class _DetailsViewState extends State<DetailsView> {
                         ],
                       );
                     }
-                    print('Has results');
+                    print(
+                        '[INFO] Readable details is null. Update flag is false');
                     widget.detailsPlaneState.readable!
                         .setReadableDetails(snapshot.data as ReadableDetails);
-                    return _buildDetails(context);
+                    return _buildDetails(context, updateFlag: false);
                   default:
                     return SpinKitSpinningLines(
                       color: Colors.white.withOpacity(0.8),
@@ -85,7 +87,7 @@ class _DetailsViewState extends State<DetailsView> {
     );
   }
 
-  Column _buildDetails(BuildContext context) {
+  Column _buildDetails(BuildContext context, {bool updateFlag = true}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -120,7 +122,7 @@ class _DetailsViewState extends State<DetailsView> {
                     letterSpacing: 0),
               ),
               const SizedBox(height: 20),
-              ..._buildChapterList(),
+              ..._buildChapterList(updateFlag),
             ],
           ),
         ),
@@ -128,44 +130,95 @@ class _DetailsViewState extends State<DetailsView> {
     );
   }
 
-  List<Widget> _buildChapterList() {
-    return [
-      widget.detailsPlaneState.readable!.readableDetails!.metaChapters == null
-          ? SizedBox.shrink()
-          : Text(
+  List<Widget> _buildChapterList(bool updateFlag) {
+    bool noSavedChapters =
+        widget.detailsPlaneState.readable!.readableDetails!.metaChapters ==
+            null;
+    print(
+        '[INFO] Building chapter list with update flag as $updateFlag and noSavedChapters = $noSavedChapters');
+    return noSavedChapters || !updateFlag
+        ? [
+            Text(
               'CHAPTERS',
               style: Theme.of(context).textTheme.headline2!.copyWith(
                   fontSize: 11,
                   color: Colors.white.withOpacity(0.5),
                   letterSpacing: 1),
             ),
-      ...widget.detailsPlaneState.readable!.readableDetails!.metaChapters
-              ?.map((e) => Column(
-                    children: [
-                      Divider(
-                        color: Colors.white.withOpacity(0.5),
-                        height: 20,
-                        thickness: 0.5,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            e.name,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline2!
-                                .copyWith(
-                                    fontSize: 11,
-                                    color: Colors.white.withOpacity(0.8),
-                                    letterSpacing: 1),
-                          ),
-                          Spacer(),
-                        ],
-                      )
-                    ],
-                  )) ??
-          []
-    ];
+            ...widget.detailsPlaneState.readable!.readableDetails!.metaChapters
+                    ?.map((e) => ChapterItem(e)) ??
+                [],
+          ]
+        : [
+            FutureBuilder(
+              future: _getOnlineChapters(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.done:
+                    if (snapshot.hasError) {
+                      return SizedBox.shrink();
+                    }
+                    List<MetaChapter> chaps =
+                        (snapshot.data as List<MetaChapter>);
+                    if (chaps.length > 0) {
+                      Future.delayed(Duration.zero, () async {
+                        widget.detailsPlaneState.readable!
+                            .updateChapters(context, chaps);
+                      });
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: chaps
+                            .map((e) => ChapterItem(
+                                  e,
+                                  newFlag: true,
+                                ))
+                            .toList(),
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  default:
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Checking for updates',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline2!
+                              .copyWith(
+                                  fontSize: 10,
+                                  color: Colors.white.withOpacity(0.5),
+                                  letterSpacing: 1),
+                        ),
+                        const SizedBox(width: 8),
+                        SpinKitThreeBounce(
+                          color: Colors.white.withOpacity(0.8),
+                          size: 12,
+                        )
+                      ],
+                    );
+                }
+              },
+            ),
+            ...widget.detailsPlaneState.readable!.readableDetails!.metaChapters!
+                .map((e) => ChapterItem(e)),
+          ];
+  }
+
+  Future<List<MetaChapter>> _getOnlineChapters() async {
+    ReadableDetails? _readableDetails = await DataSources.details(
+        widget.detailsPlaneState.readable!.link,
+        widget.detailsPlaneState.readable!.source);
+    return _readableDetails?.metaChapters
+            ?.where((e1) => (widget
+                    .detailsPlaneState.readable!.readableDetails!.metaChapters!
+                    .where((e2) => e2.name == e1.name)
+                    .length ==
+                0))
+            .toList() ??
+        [];
   }
 
   Expanded _buildName(BuildContext context) {
@@ -283,6 +336,7 @@ class _DetailsViewState extends State<DetailsView> {
     );
   }
 
+  // TODO: Make this its own independent stateful widget
   MouseRegion _closeButton(BuildContext context) {
     return MouseRegion(
       onEnter: _toogleHover,
