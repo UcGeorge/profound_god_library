@@ -19,7 +19,11 @@ class Readable extends Jsonifiable {
   List<Chapter> chapters;
   ReadableDetails? _readableDetails;
   final String source;
+  DateTime? lastUpdated;
   bool loading = false;
+  bool isUpdating = false;
+  List<MetaChapter>? newChapters;
+  bool viewIsMounted = false;
 
   ReadableDetails? get readableDetails => _readableDetails;
 
@@ -73,16 +77,59 @@ class Readable extends Jsonifiable {
     loading = false;
   }
 
-  Readable(
-    this.name,
-    this.link,
-    this.coverPicture,
-    this.readableType,
-    this.source,
-    this.lastRead,
-    this.lastChapterRead,
-  )   : id = Helper.getID(name),
+  Readable(this.name, this.link, this.coverPicture, this.readableType,
+      this.source, this.lastRead, this.lastChapterRead,
+      {this.lastUpdated})
+      : id = Helper.getID(name),
         chapters = [];
+
+  Future<List<MetaChapter>> update() async {
+    if (newChapters != null) {
+      print('[INFO] New chapters is not null');
+      lastUpdated = DateTime.now();
+      var res = newChapters!;
+      newChapters = null;
+      return res;
+    }
+    if (!isUpdating) _getOnlineChapters();
+    int timeout = 0;
+    while (isUpdating) {
+      await Future.delayed(Duration(seconds: 1));
+      timeout++;
+      if (timeout >= 60) {
+        print('[INFO] Update timeout');
+        return [];
+      }
+    }
+    if (viewIsMounted) {
+      print('[INFO] View is Mounted. Returning chapter updates');
+      lastUpdated = DateTime.now();
+      var res = newChapters;
+      newChapters = null;
+      return res!;
+    } else {
+      print('[INFO] View is Unmounted. Returning nothing');
+      return [];
+    }
+  }
+
+  void _getOnlineChapters() async {
+    print('[INFO] Getting chapter updates');
+    isUpdating = true;
+    ReadableDetails? _readableDetails = await DataSources.details(link, source);
+    newChapters = _readableDetails?.metaChapters
+            ?.where((e1) => (readableDetails!.metaChapters!
+                    .where((e2) => e2.name == e1.name)
+                    .length ==
+                0))
+            .toList() ??
+        [];
+    isUpdating = false;
+  }
+
+  bool needsUpdate() {
+    return lastUpdated != null ? DateTime.now().hour > lastUpdated!.hour : true;
+  }
 
   Readable.fronServer(Map<String, dynamic> json)
       : id = Helper.getID(json['name']),
