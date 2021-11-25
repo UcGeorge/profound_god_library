@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
+import 'package:profoundgodlibrary/src/chapter_view_state.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 import 'package:profoundgodlibrary/src/details_plane_state.dart';
 import 'package:profoundgodlibrary/src/k_state.dart';
@@ -9,10 +10,21 @@ class SelectedMenu extends ChangeNotifier {
   String selectedMenu = "Home";
   KState state = KState.nullState();
   DetailsPlaneState detailsPlaneState = DetailsPlaneState.nullState();
+  ChapterViewState chapterViewState = ChapterViewState.nullState();
   ListQueue<String> popStack = ListQueue(10);
   ListQueue<String> pushStack = ListQueue(10);
   ListQueue<KState> popState = ListQueue(10);
   ListQueue<KState> pushState = ListQueue(10);
+
+  showChapter(Readable readable, String startChapterName) {
+    chapterViewState = ChapterViewState(readable, startChapterName);
+    notifyListeners();
+  }
+
+  closeChapter() {
+    chapterViewState = ChapterViewState.nullState();
+    notifyListeners();
+  }
 
   showDetails(Readable readable) {
     detailsPlaneState.readable?.sessionID = null;

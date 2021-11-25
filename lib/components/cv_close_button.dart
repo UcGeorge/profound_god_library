@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:profoundgodlibrary/src/SelectedMenu.dart';
 import 'package:provider/src/provider.dart';
 
-class DVCloseButton extends StatefulWidget {
-  const DVCloseButton({Key? key}) : super(key: key);
+class CVCloseButton extends StatefulWidget {
+  const CVCloseButton({Key? key}) : super(key: key);
 
   @override
-  _DVCloseButtonState createState() => _DVCloseButtonState();
+  _CVCloseButtonState createState() => _CVCloseButtonState();
 }
 
-class _DVCloseButtonState extends State<DVCloseButton> {
+class _CVCloseButtonState extends State<CVCloseButton> {
   bool isHovering = false;
   void _toogleHover(PointerEvent e) {
     setState(() {
@@ -24,7 +24,7 @@ class _DVCloseButtonState extends State<DVCloseButton> {
       onExit: _toogleHover,
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: context.read<SelectedMenu>().clearDetails,
+        onTap: context.read<SelectedMenu>().closeChapter,
         child: Text(
           'CLOSE',
           style: Theme.of(context).textTheme.headline2!.copyWith(

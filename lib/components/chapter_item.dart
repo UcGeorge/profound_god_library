@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:profoundgodlibrary/src/SelectedMenu.dart';
 import 'package:profoundgodlibrary/src/database/schema/chapter.dart';
+import 'package:profoundgodlibrary/src/database/schema/readable.dart';
+import 'package:provider/src/provider.dart';
 
 class ChapterItem extends StatefulWidget {
+  final Readable readable;
   final MetaChapter chapter;
-  const ChapterItem(this.chapter, {Key? key}) : super(key: key);
+  const ChapterItem(this.chapter, this.readable, {Key? key}) : super(key: key);
 
   @override
   State<ChapterItem> createState() => _ChapterItemState();
@@ -18,12 +22,16 @@ class _ChapterItemState extends State<ChapterItem> {
     });
   }
 
+  void showChapter() {
+    context
+        .read<SelectedMenu>()
+        .showChapter(widget.readable, widget.chapter.name);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        //TODO: Implement chapters
-      },
+      onTap: showChapter,
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         onEnter: _toogleHover,

@@ -160,7 +160,8 @@ class _DetailsViewState extends State<DetailsView> {
                   letterSpacing: 1),
             ),
             ...widget.detailsPlaneState.readable!.readableDetails!.metaChapters
-                    ?.map((e) => ChapterItem(e)) ??
+                    ?.map((e) =>
+                        ChapterItem(e, widget.detailsPlaneState.readable!)) ??
                 [],
           ]
         : [
@@ -184,39 +185,44 @@ class _DetailsViewState extends State<DetailsView> {
 
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children:
-                                  chaps.map((e) => ChapterItem(e)).toList(),
+                              children: chaps
+                                  .map((e) => ChapterItem(
+                                      e, widget.detailsPlaneState.readable!))
+                                  .toList(),
                             );
                           } else {
                             return SizedBox.shrink();
                           }
                         default:
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Checking for updates',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline2!
-                                    .copyWith(
-                                        fontSize: 10,
-                                        color: Colors.white.withOpacity(0.5),
-                                        letterSpacing: 1),
-                              ),
-                              const SizedBox(width: 8),
-                              SpinKitThreeBounce(
-                                color: Colors.white.withOpacity(0.8),
-                                size: 12,
-                              )
-                            ],
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Checking for updates',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline2!
+                                      .copyWith(
+                                          fontSize: 10,
+                                          color: Colors.white.withOpacity(0.5),
+                                          letterSpacing: 1),
+                                ),
+                                const SizedBox(width: 8),
+                                SpinKitThreeBounce(
+                                  color: Colors.white.withOpacity(0.8),
+                                  size: 12,
+                                )
+                              ],
+                            ),
                           );
                       }
                     },
                   )
                 : SizedBox.shrink(),
             ...widget.detailsPlaneState.readable!.readableDetails!.metaChapters!
-                .map((e) => ChapterItem(e)),
+                .map((e) => ChapterItem(e, widget.detailsPlaneState.readable!)),
           ];
   }
 
