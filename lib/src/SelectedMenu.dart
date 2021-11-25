@@ -15,13 +15,13 @@ class SelectedMenu extends ChangeNotifier {
   ListQueue<KState> pushState = ListQueue(10);
 
   showDetails(Readable readable) {
-    detailsPlaneState.readable?.viewIsMounted = false;
+    detailsPlaneState.readable?.sessionID = null;
     detailsPlaneState = DetailsPlaneState(readable);
     notifyListeners();
   }
 
   clearDetails() {
-    detailsPlaneState.readable!.viewIsMounted = false;
+    detailsPlaneState.readable!.sessionID = null;
     detailsPlaneState = DetailsPlaneState.nullState();
     notifyListeners();
   }

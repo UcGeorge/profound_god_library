@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:profoundgodlibrary/src/database/schema/readable.dart';
+import 'package:profoundgodlibrary/src/database/schema/chapter.dart';
 
 class ChapterItem extends StatelessWidget {
   final MetaChapter chapter;
-  final bool newFlag;
-  const ChapterItem(
-    this.chapter, {
-    Key? key,
-    this.newFlag = false,
-  }) : super(key: key);
+  const ChapterItem(this.chapter, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +24,7 @@ class ChapterItem extends StatelessWidget {
                   letterSpacing: 1),
             ),
             Spacer(),
-            newFlag
+            chapter.justUpdated
                 ? Container(
                     height: 18,
                     padding: EdgeInsets.only(left: 6, right: 6),

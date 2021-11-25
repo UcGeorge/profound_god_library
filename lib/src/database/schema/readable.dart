@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:profoundgodlibrary/src/database/database.dart';
+import 'package:profoundgodlibrary/src/database/schema/chapter.dart';
 import 'package:profoundgodlibrary/src/datasources/datasources.dart';
 import 'package:profoundgodlibrary/src/helpers.dart';
 import 'package:profoundgodlibrary/src/interfaces/jsonifiable.dart';
@@ -23,7 +24,7 @@ class Readable extends Jsonifiable {
   bool loading = false;
   bool isUpdating = false;
   List<MetaChapter>? newChapters;
-  bool viewIsMounted = false;
+  int? sessionID = null;
 
   ReadableDetails? get readableDetails => _readableDetails;
 
@@ -77,13 +78,19 @@ class Readable extends Jsonifiable {
     loading = false;
   }
 
-  Readable(this.name, this.link, this.coverPicture, this.readableType,
-      this.source, this.lastRead, this.lastChapterRead,
-      {this.lastUpdated})
-      : id = Helper.getID(name),
+  Readable(
+    this.name,
+    this.link,
+    this.coverPicture,
+    this.readableType,
+    this.source,
+    this.lastRead,
+    this.lastChapterRead, {
+    this.lastUpdated,
+  })  : id = Helper.getID(name),
         chapters = [];
 
-  Future<List<MetaChapter>> update() async {
+  Future<List<MetaChapter>> update(int sessionID) async {
     if (newChapters != null) {
       print('[INFO] New chapters is not null');
       lastUpdated = DateTime.now();
@@ -101,14 +108,14 @@ class Readable extends Jsonifiable {
         return [];
       }
     }
-    if (viewIsMounted) {
+    if (this.sessionID == sessionID) {
       print('[INFO] View is Mounted. Returning chapter updates');
       lastUpdated = DateTime.now();
       var res = newChapters;
       newChapters = null;
       return res!;
     } else {
-      print('[INFO] View is Unmounted. Returning nothing');
+      print('[INFO] Session was terminated. Returning nothing');
       return [];
     }
   }
@@ -124,6 +131,7 @@ class Readable extends Jsonifiable {
                 0))
             .toList() ??
         [];
+    for (MetaChapter m in newChapters ?? []) m.justUpdated = true;
     isUpdating = false;
   }
 
@@ -227,46 +235,4 @@ class ReadableDetails {
           for (Map<String, dynamic> e in json['chapters'])
             MetaChapter.fromJson(e)
         ];
-}
-
-class MetaChapter {
-  final String name;
-  final String link;
-
-  MetaChapter(this.name, this.link);
-  MetaChapter.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        link = json['link'];
-
-  MetaChapter.fromChap(Chapter chapter)
-      : name = chapter.name,
-        link = chapter.link;
-}
-
-class Chapter extends Jsonifiable {
-  final String name;
-  final String link;
-  bool downloaded;
-
-  Chapter(this.name, this.link, {this.downloaded = false});
-  Chapter.fromMeta(MetaChapter metaChapter)
-      : name = metaChapter.name,
-        link = metaChapter.link,
-        downloaded = false;
-
-  Chapter.fromJson(Map<String, dynamic> json)
-      : name = json["name"],
-        link = json["link"],
-        downloaded = json["downloaded"] == "true" ? true : false;
-
-  @override
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "link": link,
-        "downloaded": downloaded ? "true" : "false",
-      };
-
-  Future<void> download() async {
-    downloaded = true;
-  }
 }
