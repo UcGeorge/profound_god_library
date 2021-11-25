@@ -38,7 +38,6 @@ class _DetailsViewState extends State<DetailsView> {
     return Container(
       height: double.infinity,
       color: Color(0xff262626),
-      padding: EdgeInsets.all(20),
       child: widget.detailsPlaneState.readable!.readableDetails == null
           ? FutureBuilder(
               future: DataSources.details(
@@ -93,17 +92,21 @@ class _DetailsViewState extends State<DetailsView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DVCloseButton(),
-        const SizedBox(height: 20),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            _buildCoverPhoto(),
-            const SizedBox(width: 20),
-            _buildName(context),
-          ],
+        Padding(
+          padding: EdgeInsets.only(top: 20, left: 20),
+          child: DVCloseButton(),
         ),
-        const SizedBox(height: 20),
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              _buildCoverPhoto(),
+              const SizedBox(width: 20),
+              _buildName(context),
+            ],
+          ),
+        ),
         Expanded(
           child: SmoothScrollView(
             controller: controller,
@@ -111,21 +114,27 @@ class _DetailsViewState extends State<DetailsView> {
               physics: NeverScrollableScrollPhysics(),
               controller: controller,
               children: [
-                Text(
-                  'DESCRIPTION',
-                  style: Theme.of(context).textTheme.headline2!.copyWith(
-                      fontSize: 11,
-                      color: Colors.white.withOpacity(0.5),
-                      letterSpacing: 1),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    'DESCRIPTION',
+                    style: Theme.of(context).textTheme.headline2!.copyWith(
+                        fontSize: 11,
+                        color: Colors.white.withOpacity(0.5),
+                        letterSpacing: 1),
+                  ),
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  widget
-                      .detailsPlaneState.readable!.readableDetails!.description,
-                  style: GoogleFonts.montserrat(
-                      fontSize: 14,
-                      color: Colors.white.withOpacity(0.8),
-                      letterSpacing: 0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    widget.detailsPlaneState.readable!.readableDetails!
+                        .description,
+                    style: GoogleFonts.montserrat(
+                        fontSize: 14,
+                        color: Colors.white.withOpacity(0.8),
+                        letterSpacing: 0),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 ..._buildChapterList(updateFlag, sessionID),

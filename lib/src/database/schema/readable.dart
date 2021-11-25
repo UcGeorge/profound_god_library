@@ -24,7 +24,7 @@ class Readable extends Jsonifiable {
   bool loading = false;
   bool isUpdating = false;
   List<MetaChapter>? newChapters;
-  int? sessionID = null;
+  int? sessionID;
 
   ReadableDetails? get readableDetails => _readableDetails;
 

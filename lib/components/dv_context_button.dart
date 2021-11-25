@@ -71,28 +71,20 @@ class _DVContextButtonState extends State<DVContextButton> {
               : EdgeInsets.only(left: 8, right: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            border: Border.all(
-                color: hoverFlag
-                    ? Colors.transparent
-                    : Colors.white.withOpacity(0.7),
-                width: 1),
+            border: Border.all(color: Colors.white.withOpacity(0.7), width: 1),
             color:
-                hoverFlag ? Colors.white.withOpacity(0.7) : Colors.transparent,
+                hoverFlag ? Colors.white.withOpacity(0.15) : Colors.transparent,
           ),
           child: Center(
             child: loading
                 ? SpinKitThreeBounce(
-                    color: hoverFlag
-                        ? Colors.black.withOpacity(0.8)
-                        : Colors.white.withOpacity(0.8),
+                    color: Colors.white.withOpacity(0.8),
                     size: 12,
                   )
                 : widget.iconButton
                     ? Icon(
                         widget.icon,
-                        color: hoverFlag
-                            ? Colors.black.withOpacity(0.8)
-                            : Colors.white.withOpacity(0.8),
+                        color: Colors.white.withOpacity(0.8),
                         size: widget.iconSize ?? 18,
                       )
                     : Text(
@@ -101,9 +93,7 @@ class _DVContextButtonState extends State<DVContextButton> {
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.inter(
                           fontSize: 12,
-                          color: hoverFlag
-                              ? Color(0xff262626)
-                              : Colors.white.withOpacity(0.8),
+                          color: Colors.white.withOpacity(0.8),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
