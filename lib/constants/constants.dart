@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+const int NORMAL_SCROLL_ANIMATION_LENGTH_MS = 250;
+const int SCROLL_SPEED = 130;
+
 final List<Color> colors = [
   Colors.green,
   Colors.red,

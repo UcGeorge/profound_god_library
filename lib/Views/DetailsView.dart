@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +9,9 @@ import 'package:profoundgodlibrary/components/chapter_item.dart';
 import 'package:profoundgodlibrary/components/details_view_context_buttons.dart';
 import 'package:profoundgodlibrary/components/dv_close_button.dart';
 import 'package:profoundgodlibrary/components/rating_star.dart';
+import 'package:profoundgodlibrary/components/smooth_scrollview.dart';
 import 'package:profoundgodlibrary/constants/constants.dart';
+import 'package:profoundgodlibrary/src/database/schema/chapter.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 import 'package:profoundgodlibrary/src/datasources/datasources.dart';
 import 'package:profoundgodlibrary/src/details_plane_state.dart';
@@ -25,9 +29,12 @@ class DetailsView extends StatefulWidget {
 }
 
 class _DetailsViewState extends State<DetailsView> {
+  var rand = Random();
+  ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
-    widget.detailsPlaneState.readable!.viewIsMounted = true;
+    int sessionID = rand.nextInt(99999999);
+    widget.detailsPlaneState.readable!.sessionID = sessionID;
     return Container(
       height: double.infinity,
       color: Color(0xff262626),
@@ -68,7 +75,7 @@ class _DetailsViewState extends State<DetailsView> {
                         '[INFO] Readable details is null. Update flag is false');
                     widget.detailsPlaneState.readable!
                         .setReadableDetails(snapshot.data as ReadableDetails);
-                    return _buildDetails(context, updateFlag: false);
+                    return _buildDetails(context, sessionID, updateFlag: false);
                   default:
                     return SpinKitSpinningLines(
                       color: Colors.white.withOpacity(0.8),
@@ -77,11 +84,12 @@ class _DetailsViewState extends State<DetailsView> {
                 }
               },
             )
-          : _buildDetails(context),
+          : _buildDetails(context, sessionID),
     );
   }
 
-  Column _buildDetails(BuildContext context, {bool updateFlag = true}) {
+  Column _buildDetails(BuildContext context, int sessionID,
+      {bool updateFlag = true}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -97,34 +105,39 @@ class _DetailsViewState extends State<DetailsView> {
         ),
         const SizedBox(height: 20),
         Expanded(
-          child: ListView(
-            controller: ScrollController(),
-            children: [
-              Text(
-                'DESCRIPTION',
-                style: Theme.of(context).textTheme.headline2!.copyWith(
-                    fontSize: 11,
-                    color: Colors.white.withOpacity(0.5),
-                    letterSpacing: 1),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                widget.detailsPlaneState.readable!.readableDetails!.description,
-                style: GoogleFonts.montserrat(
-                    fontSize: 14,
-                    color: Colors.white.withOpacity(0.8),
-                    letterSpacing: 0),
-              ),
-              const SizedBox(height: 20),
-              ..._buildChapterList(updateFlag),
-            ],
+          child: SmoothScrollView(
+            controller: controller,
+            child: ListView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: controller,
+              children: [
+                Text(
+                  'DESCRIPTION',
+                  style: Theme.of(context).textTheme.headline2!.copyWith(
+                      fontSize: 11,
+                      color: Colors.white.withOpacity(0.5),
+                      letterSpacing: 1),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  widget
+                      .detailsPlaneState.readable!.readableDetails!.description,
+                  style: GoogleFonts.montserrat(
+                      fontSize: 14,
+                      color: Colors.white.withOpacity(0.8),
+                      letterSpacing: 0),
+                ),
+                const SizedBox(height: 20),
+                ..._buildChapterList(updateFlag, sessionID),
+              ],
+            ),
           ),
         ),
       ],
     );
   }
 
-  List<Widget> _buildChapterList(bool updateFlag) {
+  List<Widget> _buildChapterList(bool updateFlag, int sessionID) {
     bool noSavedChapters =
         widget.detailsPlaneState.readable!.readableDetails!.metaChapters ==
             null;
@@ -144,7 +157,8 @@ class _DetailsViewState extends State<DetailsView> {
         : [
             widget.detailsPlaneState.readable!.needsUpdate()
                 ? FutureBuilder(
-                    future: widget.detailsPlaneState.readable!.update(),
+                    future:
+                        widget.detailsPlaneState.readable!.update(sessionID),
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.done:
@@ -161,12 +175,8 @@ class _DetailsViewState extends State<DetailsView> {
 
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: chaps
-                                  .map((e) => ChapterItem(
-                                        e,
-                                        newFlag: true,
-                                      ))
-                                  .toList(),
+                              children:
+                                  chaps.map((e) => ChapterItem(e)).toList(),
                             );
                           } else {
                             return SizedBox.shrink();

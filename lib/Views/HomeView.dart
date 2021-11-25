@@ -1,6 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:profoundgodlibrary/components/components.dart';
 import 'package:profoundgodlibrary/components/AppBar.dart';
+import 'package:profoundgodlibrary/components/smooth_scrollview.dart';
+import 'package:profoundgodlibrary/constants/constants.dart';
 import 'package:profoundgodlibrary/src/database/database.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 import 'package:profoundgodlibrary/src/helpers.dart';
@@ -14,6 +17,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     var recents = Helper.sort<Readable>(
@@ -37,45 +41,50 @@ class _HomeViewState extends State<HomeView> {
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 30),
-            child: ListView(
-              children: [
-                recents.isEmpty && recentSearches.isEmpty && shortcuts.isEmpty
-                    ? Container(
-                        child: Center(
-                          child: Text(
-                            "It's lonely here...",
-                            style: Theme.of(context).textTheme.headline2,
+            child: SmoothScrollView(
+              controller: controller,
+              child: ListView(
+                physics: NeverScrollableScrollPhysics(),
+                controller: controller,
+                children: [
+                  recents.isEmpty && recentSearches.isEmpty && shortcuts.isEmpty
+                      ? Container(
+                          child: Center(
+                            child: Text(
+                              "It's lonely here...",
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
                           ),
+                        )
+                      : SizedBox.shrink(),
+                  recents.isEmpty
+                      ? SizedBox.shrink()
+                      : ReadableSection(
+                          title: 'Continue Reading',
+                          readables: recents,
+                          seeMore: () {},
                         ),
-                      )
-                    : SizedBox.shrink(),
-                recents.isEmpty
-                    ? SizedBox.shrink()
-                    : ReadableSection(
-                        title: 'Continue Reading',
-                        readables: recents,
-                        seeMore: () {},
-                      ),
-                recents.isEmpty ? SizedBox.shrink() : SizedBox(height: 30),
-                recentSearches.isEmpty
-                    ? SizedBox.shrink()
-                    : ReadableSection(
-                        title: 'Recent Searches',
-                        readables: recentSearches.values.toList(),
-                        seeMore: () {},
-                      ),
-                recentSearches.isEmpty
-                    ? SizedBox.shrink()
-                    : SizedBox(height: 30),
-                shortcuts.isEmpty
-                    ? SizedBox.shrink()
-                    : ReadableSection(
-                        title: 'Shortcuts',
-                        readables: shortcuts.values.toList(),
-                        seeMore: () {},
-                      ),
-                SizedBox(height: 30),
-              ],
+                  recents.isEmpty ? SizedBox.shrink() : SizedBox(height: 30),
+                  recentSearches.isEmpty
+                      ? SizedBox.shrink()
+                      : ReadableSection(
+                          title: 'Recent Searches',
+                          readables: recentSearches.values.toList(),
+                          seeMore: () {},
+                        ),
+                  recentSearches.isEmpty
+                      ? SizedBox.shrink()
+                      : SizedBox(height: 30),
+                  shortcuts.isEmpty
+                      ? SizedBox.shrink()
+                      : ReadableSection(
+                          title: 'Shortcuts',
+                          readables: shortcuts.values.toList(),
+                          seeMore: () {},
+                        ),
+                  SizedBox(height: 30),
+                ],
+              ),
             ),
           ),
         )
