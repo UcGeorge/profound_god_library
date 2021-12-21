@@ -1,3 +1,4 @@
+import 'package:profoundgodlibrary/src/database/schema/chapter.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 import 'package:profoundgodlibrary/src/datasources/datasources.dart';
 
@@ -17,6 +18,12 @@ class DivineDaoLibrary extends DataSource {
   @override
   Future<ReadableDetails?> details(String link) async {
     // TODO: implement details
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ChapterUnit>> getChapter(String linkl) {
+    // TODO: implement getChapter
     throw UnimplementedError();
   }
 }

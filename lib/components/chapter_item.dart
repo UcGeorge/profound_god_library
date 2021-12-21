@@ -63,11 +63,13 @@ class _ChapterItemState extends State<ChapterItem> {
                             height: 18,
                             padding: EdgeInsets.only(left: 6, right: 6),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Colors.transparent,
-                                border: Border.all(
-                                    color: Colors.white.withOpacity(0.5),
-                                    width: 1)),
+                              borderRadius: BorderRadius.circular(100),
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.5),
+                                width: 1,
+                              ),
+                            ),
                             child: Center(
                               child: Text(
                                 'New',

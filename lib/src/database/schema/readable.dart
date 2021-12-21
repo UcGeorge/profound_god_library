@@ -37,13 +37,17 @@ class Readable extends Jsonifiable {
   }
 
   void updateChapters(BuildContext context, List<MetaChapter> metaChaps) {
-    _updateSelfFromDb(context);
+    syncFromDB(context);
     _readableDetails!.metaChapters?.insertAll(0, metaChaps);
     chapters.insertAll(0, metaChaps.map((e) => Chapter.fromMeta(e)));
+    syncToDB(context);
+  }
+
+  void syncToDB(BuildContext context) {
     context.read<Database>().library.update(context, id, this);
   }
 
-  void _updateSelfFromDb(BuildContext context) {
+  void syncFromDB(BuildContext context) {
     Readable? thisFromDb =
         context.read<Database>().library.select((r) => r.id == id)[id];
     lastRead = thisFromDb?.lastRead ?? lastRead;

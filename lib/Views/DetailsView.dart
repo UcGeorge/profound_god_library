@@ -152,12 +152,16 @@ class _DetailsViewState extends State<DetailsView> {
             null;
     return noSavedChapters || !updateFlag
         ? [
-            Text(
-              'CHAPTERS',
-              style: Theme.of(context).textTheme.headline2!.copyWith(
-                  fontSize: 11,
-                  color: Colors.white.withOpacity(0.5),
-                  letterSpacing: 1),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+              child: Text(
+                'CHAPTERS',
+                style: Theme.of(context).textTheme.headline2!.copyWith(
+                    fontSize: 11,
+                    color: Colors.white.withOpacity(0.5),
+                    letterSpacing: 1),
+              ),
             ),
             ...widget.detailsPlaneState.readable!.readableDetails!.metaChapters
                     ?.map((e) =>
@@ -165,6 +169,17 @@ class _DetailsViewState extends State<DetailsView> {
                 [],
           ]
         : [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+              child: Text(
+                'CHAPTERS',
+                style: Theme.of(context).textTheme.headline2!.copyWith(
+                    fontSize: 11,
+                    color: Colors.white.withOpacity(0.5),
+                    letterSpacing: 1),
+              ),
+            ),
             widget.detailsPlaneState.readable!.needsUpdate()
                 ? FutureBuilder(
                     future:

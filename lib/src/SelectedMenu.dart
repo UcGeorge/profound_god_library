@@ -17,6 +17,7 @@ class SelectedMenu extends ChangeNotifier {
   ListQueue<KState> pushState = ListQueue(10);
 
   showChapter(Readable readable, String startChapterName) {
+    detailsPlaneState.readable!.sessionID = null;
     chapterViewState = ChapterViewState(readable, startChapterName);
     notifyListeners();
   }

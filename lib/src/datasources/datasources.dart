@@ -1,6 +1,7 @@
 export 'package:profoundgodlibrary/src/datasources/Manganelo.dart';
 export 'package:profoundgodlibrary/src/datasources/WuxiaWorld.dart';
 
+import 'package:profoundgodlibrary/src/database/schema/chapter.dart';
 import 'package:profoundgodlibrary/src/database/schema/readable.dart';
 import 'package:profoundgodlibrary/src/datasources/Manganelo.dart';
 import 'package:profoundgodlibrary/src/datasources/WuxiaWorld.dart';
@@ -13,7 +14,7 @@ abstract class DataSource {
   DataSource(this.dataSourceID);
   Future<List<Readable>> search(String searchTerm);
   Future<ReadableDetails?> details(String link);
-  // String searchLink();
+  Future<List<ChapterUnit>> getChapter(String link);
 }
 
 class DataSources {
@@ -34,6 +35,14 @@ class DataSources {
         .where((element) => element.dataSourceID == source)
         .first
         .details(link);
+  }
+
+  static Future<List<ChapterUnit>> getChapter(
+      String link, String source) async {
+    return await dataSources
+        .where((element) => element.dataSourceID == source)
+        .first
+        .getChapter(link);
   }
 }
 
