@@ -87,7 +87,6 @@ class _ChapterViewState extends State<ChapterView> {
                               List<ChapterUnit> result =
                                   snapshot.data as List<ChapterUnit>;
                               currentChapter.setChapterUnits(result);
-                              nextButtons = result.map((e) => false).toList();
                               loaded.addAll(result);
                               Future.delayed(Duration(seconds: 0), () {
                                 widget.chapterViewState.readable!
